@@ -1,0 +1,94 @@
+// generating project:
+// gradle init --type java-library
+// $ gradle wrapper --gradle-version 6.5.1
+
+// generating .gitignore 
+// $ curl -sLw "\n" https://www.toptal.com/developers/gitignore/api/windows,linux,macos,java,eclipse,intellij,netbeans,gradle > .gitignore
+
+// copy elements from this file that you need
+
+// multiprojects:
+//   https://docs.gradle.org/current/userguide/multi_project_builds.html
+//   https://rominirani.com/gradle-tutorial-part-3-multiple-java-projects-5b1c4d1fbd8d
+//   example - https://gitlab.tel.fer.hr/dm/imo
+
+plugins {
+  id 'java'
+    id 'eclipse'
+    id 'com.github.ben-manes.versions' version '0.29.0' // find new versions of dependency task: dependencyUpdates
+    id 'com.adarshr.test-logger' version '2.1.0' // log tests in console
+}
+
+repositories {
+    jcenter()
+}
+
+group = 'hr.fer.tel.crc'
+archivesBaseName = 'CrcDiagram'
+version = '0.0.1-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+// enable preview features in compile
+compileJava {
+  //options.compilerArgs += ["--enable-preview"]
+}
+
+test {
+    // runs tests with JUnit 5
+    useJUnitPlatform()
+
+    // enable preview features in tests
+    //jvmArgs '--enable-preview'
+}
+
+// run all test except tagged with @Tag("integration")
+// custom annotation example -> https://junit.org/junit5/docs/current/user-guide/#writing-tests-meta-annotations
+task unitTest(type: Test) { Test task ->
+    task.useJUnitPlatform { org.gradle.api.tasks.testing.junitplatform.JUnitPlatformOptions options ->
+        options.excludeTags 'integration'
+    }
+}
+
+// logs running tests in console
+testlogger {
+    theme 'standard' // or 'plain'
+}
+
+// lombok
+configurations {
+  compileOnly {
+    extendsFrom annotationProcessor
+  }
+}
+
+dependencies {
+    // lombok
+    //   builders - https://www.baeldung.com/lombok-builder
+    compileOnly 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Apache Commons Lang3
+    //   equals, hashcode, toString builders - http://www.java2s.com/Tutorial/Java/0500__Apache-Common/EqualsBuilderreflectionEquals.htm
+    //   tuple, triple
+//    implementation 'org.apache.commons:commons-lang3:3.10'
+
+    // java 11 missing dependencies
+//    compile('javax.xml.bind:jaxb-api:2.3.1')
+//    runtime('org.glassfish.jaxb:jaxb-runtime:2.3.1')
+
+
+    //////// TESTING /////////
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+    // parametrized tests
+    testImplementation 'org.junit.jupiter:junit-jupiter-params:5.6.2'
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:3.4.4'
+    testImplementation 'org.mockito:mockito-junit-jupiter:3.4.4'
+    // AssertJ
+    testImplementation 'org.assertj:assertj-core:3.16.1'
+}
+// to check for new dependencies run following
+// $ gradle dependencyUpdates
