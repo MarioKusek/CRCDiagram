@@ -8,8 +8,11 @@ class MatchingCurlyBracesTests {
 
   @Test
   void onlyCurlyBraces() {
-
     assertThat(CurlyBracesMatcher.find("{}",0)).isEqualTo(1);
   }
 
+  @Test
+  void emptyString_shouldReturnMinusOne() throws Exception {
+    assertThat(CurlyBracesMatcher.find("",0)).isEqualTo(-1);
+  }
 }
