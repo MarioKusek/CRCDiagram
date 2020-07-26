@@ -6,6 +6,9 @@ public class CurlyBracesMatcher {
     if(text.length() == 0)
       return -1;
 
+    if(text.charAt(openCurlyBraceIndex) != '{')
+      return -1;
+
     return 1;
   }
 
