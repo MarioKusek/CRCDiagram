@@ -20,4 +20,9 @@ class MatchingCurlyBracesTests {
   void noBracesOnInputIndex_shouldReturnMinusOne() throws Exception {
     assertThat(CurlyBracesMatcher.find(" ",0)).isEqualTo(-1);
   }
+
+  @Test
+  void noClosingBrace_shouldReturnMinusOne() throws Exception {
+    assertThat(CurlyBracesMatcher.find("{",0)).isEqualTo(-1);
+  }
 }

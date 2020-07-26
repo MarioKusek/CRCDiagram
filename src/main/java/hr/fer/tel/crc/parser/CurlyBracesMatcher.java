@@ -9,7 +9,6 @@ public class CurlyBracesMatcher {
     if(text.charAt(openCurlyBraceIndex) != '{')
       return -1;
 
-    return 1;
+    return text.indexOf('}');
   }
-
 }
