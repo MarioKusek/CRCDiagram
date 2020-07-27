@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
+import hr.fer.tel.crc.Class;
+
 class ParseClassBodyTest {
 
   @Test
@@ -18,4 +20,15 @@ class ParseClassBodyTest {
     assertThat(e.getColumn()).isEqualTo(7);
   }
 
+  @Test
+  void emptyBody() throws Exception {
+    Class c = new ClassParser("class x {}").parse();
+    assertThat(c.getResponsibilities()).isEmpty();
+  }
+
+  @Test
+  void bodyWithNoResponsibility() throws Exception {
+    Class c = new ClassParser("class x {}").parse();
+    assertThat(c.getResponsibilities()).isEmpty();
+  }
 }
