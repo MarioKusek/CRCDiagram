@@ -4,6 +4,16 @@ import hr.fer.tel.crc.Class;
 
 public class ClassParser {
 
+  private String text;
+
+  public ClassParser(String text) {
+    this.text = text;
+  }
+
+  public Class parse() {
+    return parse(text);
+  }
+
   public static Class parse(String classText) {
     StringRange bodyRange = findBodyRange(classText);
     StringRange classDeclarationRange = new StringRange(0, bodyRange.getStart() - 1);
@@ -34,4 +44,5 @@ public class ClassParser {
 
     return new StringRange(range.getStart() + 6, text.indexOf(' ', range.getStart() + 6));
   }
+
 }
