@@ -11,19 +11,15 @@ public class ClassParser {
   }
 
   public Class parse() {
-    return parse(text);
-  }
-
-  public static Class parse(String classText) {
-    StringRange bodyRange = findBodyRange(classText);
+    StringRange bodyRange = findBodyRange(text);
     StringRange classDeclarationRange = new StringRange(0, bodyRange.getStart() - 1);
-
-    StringRange nameRange = extractClassName(classText, classDeclarationRange);
-    Class crcClass = new Class(nameRange.apply(classText));
-
-    StringRange aliasRange = extractAlias(classText, new StringRange(nameRange.getEnd() + 1, classDeclarationRange.getEnd()));
-    crcClass.setAlias(aliasRange.apply(classText));
-
+    
+    StringRange nameRange = extractClassName(text, classDeclarationRange);
+    Class crcClass = new Class(nameRange.apply(text));
+    
+    StringRange aliasRange = extractAlias(text, new StringRange(nameRange.getEnd() + 1, classDeclarationRange.getEnd()));
+    crcClass.setAlias(aliasRange.apply(text));
+    
     return crcClass;
   }
 
