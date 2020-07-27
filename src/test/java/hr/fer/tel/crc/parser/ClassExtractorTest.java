@@ -25,7 +25,7 @@ class ClassExtractorTest {
 
   @Test
   void extractFirstClassFromInput() {
-    assertThat(ClassExtractor.extractClass(input, 0).apply(input)).isEqualTo(
+    assertThat(StringExtractorUtil.extractClass(input, 0).apply(input)).isEqualTo(
         "class name {\n" +
             "    responsibility : colleborator\n" +
             "    ...\n" +
@@ -34,7 +34,7 @@ class ClassExtractorTest {
 
   @Test
   void extractSecondClassFromInput() {
-    assertThat(ClassExtractor.extractClass(input, 58).apply(input)).isEqualTo(
+    assertThat(StringExtractorUtil.extractClass(input, 58).apply(input)).isEqualTo(
         "class name2 {\n" +
             "    responsibility2 : colleborator2\n" +
             "    ...\n" +
