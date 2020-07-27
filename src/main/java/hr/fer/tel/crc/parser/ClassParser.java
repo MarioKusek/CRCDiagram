@@ -42,14 +42,24 @@ public class ClassParser {
 
     return bodyContentRange.apply(text).lines()
       .filter(l -> !l.isBlank())
-      //.map(l -> {System.out.println("filtered: " + l); return l;})
       .map(l -> extractResponsibility(l.trim()))
-      //.map(r -> {System.out.println("responsibility: " + r); return r;})
       .collect(Collectors.toList());
   }
 
   private Responsibility extractResponsibility(String line) {
-    return new Responsibility(line);
+    int collaboratorDividerIndex = findCollaboratorDividerIndex(line);
+    Responsibility responsibility;
+    if(collaboratorDividerIndex != -1) {
+      responsibility = new Responsibility(line.substring(0, collaboratorDividerIndex).trim());
+      responsibility.setCollaborator(line.substring(collaboratorDividerIndex+1).trim());
+    } else {
+      responsibility = new Responsibility(line);
+    }
+    return responsibility;
+  }
+
+  private int findCollaboratorDividerIndex(String line) {
+    return line.indexOf(':');
   }
 
   private StringRange findBodyRange() {
