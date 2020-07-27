@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
-class ParseClassBodtTest {
+class ParseClassBodyTest {
 
   @Test
   void noClassBody() {
