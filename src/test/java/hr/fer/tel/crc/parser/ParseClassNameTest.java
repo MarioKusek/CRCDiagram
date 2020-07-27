@@ -57,4 +57,24 @@ class ParseClassNameTest {
     assertThat(e.getLine()).isEqualTo(1);
     assertThat(e.getColumn()).isEqualTo(6);
   }
+
+  @Test
+  void extractClassWithNoClassKeyword_shouldThrowException() throws Exception {
+    ParsingException e = assertThrows(ParsingException.class, () -> {
+      new ClassParser("{}").parse();
+    });
+
+    assertThat(e.getLine()).isEqualTo(1);
+    assertThat(e.getColumn()).isEqualTo(0);
+  }
+
+  @Test
+  void extractClassAndAlias_whenJustAsKeyword_shouldSetAliasToNull() throws Exception {
+    ParsingException e = assertThrows(ParsingException.class, () -> {
+      new ClassParser("class x as {}").parse();
+    });
+
+    assertThat(e.getLine()).isEqualTo(1);
+    assertThat(e.getColumn()).isEqualTo(11);
+  }
 }
