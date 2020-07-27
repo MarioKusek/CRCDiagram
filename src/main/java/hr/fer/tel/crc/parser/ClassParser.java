@@ -17,6 +17,12 @@ public class ClassParser {
   private static String extractClassName(String classDeclaration) {
     String classNameDeclaration = classDeclaration.substring(6);
 
+    if(classNameDeclaration.startsWith("\"")) {
+      int classNameEndIndex = classNameDeclaration.indexOf('"', 1);
+      return classNameDeclaration.substring(1, classNameEndIndex);
+    }
+
+
     return classNameDeclaration;
   }
 }

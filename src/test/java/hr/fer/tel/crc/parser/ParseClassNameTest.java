@@ -20,4 +20,10 @@ class ParseClassNameTest {
     assertThat(c.getName()).isEqualTo("name2");
   }
 
+  @Test
+  void extractClassNameWithSpaces() throws Exception {
+    Class c = ClassParser.parse("class \"class name with spaces\" {}");
+    assertThat(c.getName()).isEqualTo("class name with spaces");
+  }
+
 }
