@@ -2,18 +2,25 @@ package hr.fer.tel.crc.parser;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ClassExtractorTest {
 
-  @Test
-  void extractOneClassFromInput() {
-    String input = "\n" +
+  private String input;
+
+  @BeforeEach
+  void setup() {
+    input = "\n" +
         "class name {\n" +
         "    responsibility : colleborator\n" +
         "    ...\n" +
         "}\n" +
         "";
+  }
+
+  @Test
+  void extractOneClassFromInput() {
 
     assertThat(ClassExtractor.extractClass(input, 0).apply(input)).isEqualTo(
         "class name {\n" +
