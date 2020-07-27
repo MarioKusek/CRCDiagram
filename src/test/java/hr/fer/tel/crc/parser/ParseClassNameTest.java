@@ -15,6 +15,13 @@ class ParseClassNameTest {
   }
 
   @Test
+  void extractClassNameFromRange() {
+    String text = "class class name {}";
+    Class c = new ClassParser(text, new StringRange(6, text.length()-1)).parse();
+    assertThat(c.getName()).isEqualTo("name");
+  }
+
+  @Test
   void extractClassName2() {
     Class c = new ClassParser("class name2 {}").parse();
     assertThat(c.getName()).isEqualTo("name2");
