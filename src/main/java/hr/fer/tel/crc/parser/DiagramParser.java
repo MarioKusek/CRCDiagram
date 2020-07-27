@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import hr.fer.tel.crc.Class;
+import hr.fer.tel.crc.Diagram;
 
 public class DiagramParser {
 
@@ -15,7 +16,7 @@ public class DiagramParser {
     classes = new LinkedList<>();
   }
 
-  public List<Class> parse() {
+  public List<Class> parseClasses() {
     StringRange classRange = StringExtractorUtil.extractClass(text, 0);
 
     while(!classRange.isEmptyRange()) {
@@ -24,5 +25,10 @@ public class DiagramParser {
     }
 
     return classes;
+  }
+
+  public Diagram parse() {
+    parseClasses();
+    return new Diagram(classes);
   }
 }
