@@ -51,7 +51,8 @@ public class ClassParser {
     Responsibility responsibility;
     if(collaboratorDividerIndex != -1) {
       responsibility = new Responsibility(line.substring(0, collaboratorDividerIndex).trim()
-          .replaceAll("\\\\:", ":"));
+          .replaceAll("\\\\:", ":")
+          .replace("\\\\", "\\"));
       responsibility.setCollaborator(line.substring(collaboratorDividerIndex+1).trim());
     } else {
       responsibility = new Responsibility(line);
