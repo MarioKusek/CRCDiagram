@@ -16,15 +16,13 @@ public class DiagramParser {
     classes = new LinkedList<>();
   }
 
-  public List<Class> parseClasses() {
+  public void parseClasses() {
     StringRange classRange = StringExtractorUtil.extractClass(text, 0);
 
     while(!classRange.isEmptyRange()) {
       classes.add(new ClassParser(text, classRange).parse());
       classRange = StringExtractorUtil.extractClass(text, classRange.getEnd());
     }
-
-    return classes;
   }
 
   public Diagram parse() {
