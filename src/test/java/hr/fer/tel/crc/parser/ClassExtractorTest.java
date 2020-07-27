@@ -20,8 +20,7 @@ class ClassExtractorTest {
   }
 
   @Test
-  void extractOneClassFromInput() {
-
+  void extractFirstClassFromInput() {
     assertThat(ClassExtractor.extractClass(input, 0).apply(input)).isEqualTo(
         "class name {\n" +
             "    responsibility : colleborator\n" +
