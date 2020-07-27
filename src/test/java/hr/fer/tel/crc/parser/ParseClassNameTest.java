@@ -26,4 +26,10 @@ class ParseClassNameTest {
     assertThat(c.getName()).isEqualTo("class name with spaces");
   }
 
+  @Test
+  void extractClassNameAndAlias() throws Exception {
+    Class c = ClassParser.parse("class className as cn {}");
+    assertThat(c.getName()).isEqualTo("className");
+    assertThat(c.getAlias()).isEqualTo("cn");
+  }
 }

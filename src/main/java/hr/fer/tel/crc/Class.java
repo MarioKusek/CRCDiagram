@@ -1,15 +1,15 @@
 package hr.fer.tel.crc;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class Class {
 
-  private String name;
+  private final String name;
 
-  public Class(String name) {
-    this.name = name;
-  }
-
-  public String getName() {
-    return name;
-  }
-
+  private String alias;
 }

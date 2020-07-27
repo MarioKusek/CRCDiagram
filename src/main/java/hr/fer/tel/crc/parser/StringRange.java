@@ -1,15 +1,22 @@
 package hr.fer.tel.crc.parser;
 
-public class StringRange {
-  private int start;
-  private int end;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-  public StringRange(int start, int end) {
-    this.start = start;
-    this.end = end;
-  }
+@RequiredArgsConstructor
+@Getter
+public class StringRange {
+  private final int start;
+  private final int end;
 
   public String apply(String text) {
+    if(isEmptyRange())
+      return null;
+
     return text.substring(start, end);
+  }
+
+  private boolean isEmptyRange() {
+    return start < 0 || end < 0 || end < start;
   }
 }
