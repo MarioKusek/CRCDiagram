@@ -30,4 +30,14 @@ class MatchingCurlyBracesTests {
   void curlyBracesWithContent() throws Exception {
     assertThat(CurlyBracesMatcher.find("{ }",0)).isEqualTo(2);
   }
+
+  @Test
+  void nestingCurlyBracesWithContent() throws Exception {
+    assertThat(CurlyBracesMatcher.find("{{ }}",0)).isEqualTo(4);
+  }
+
+  @Test
+  void nestingCurlyBracesWithContent2() throws Exception {
+    assertThat(CurlyBracesMatcher.find("{a{b}c{d{e}f}g}",6)).isEqualTo(12);
+  }
 }
