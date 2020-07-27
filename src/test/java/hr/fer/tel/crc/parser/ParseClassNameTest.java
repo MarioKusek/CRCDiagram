@@ -13,6 +13,7 @@ class ParseClassNameTest {
   void extractClassName() {
     Class c = new ClassParser("class name {}").parse();
     assertThat(c.getName()).isEqualTo("name");
+    assertThat(c.getAlias()).isNull();
   }
 
   @Test
@@ -20,6 +21,7 @@ class ParseClassNameTest {
     String text = "class class name {}";
     Class c = new ClassParser(text, new StringRange(6, text.length()-1)).parse();
     assertThat(c.getName()).isEqualTo("name");
+    assertThat(c.getAlias()).isNull();
   }
 
   @Test

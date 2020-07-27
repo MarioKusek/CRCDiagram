@@ -79,9 +79,13 @@ public class ClassParser {
 
   private StringRange extractAlias(StringRange range) {
     int asIndex = text.indexOf("as ", range.getStart());
+    if(asIndex == -1)
+      return new StringRange(-1, -1);
+
     StringRange aliasRange = new StringRange(asIndex + 3, text.indexOf(' ', asIndex + 3)-1);
     if(aliasRange.isEmptyRange())
       throw new ParsingException("Missing alias", text, aliasRange.getStart());
+
     return aliasRange;
   }
 
