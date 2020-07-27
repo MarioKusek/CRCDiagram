@@ -5,9 +5,7 @@ import hr.fer.tel.crc.Class;
 public class ClassParser {
 
   public static Class parse(String classText) {
-
-    StringRange bodyRange = StringExtractorUtil.findMatchingCurlyBraceRange(classText, classText.indexOf('{'));
-
+    StringRange bodyRange = findBodyRange(classText);
     StringRange classDeclarationRange = new StringRange(0, bodyRange.getStart() - 1);
 
     StringRange nameRange = extractClassName(classText, classDeclarationRange);
@@ -17,6 +15,10 @@ public class ClassParser {
     crcClass.setAlias(aliasRange.apply(classText));
 
     return crcClass;
+  }
+
+  private static StringRange findBodyRange(String classText) {
+    return StringExtractorUtil.findMatchingCurlyBraceRange(classText, classText.indexOf('{'));
   }
 
   private static StringRange extractAlias(String text, StringRange range) {
