@@ -50,7 +50,8 @@ public class ClassParser {
     int collaboratorDividerIndex = findCollaboratorDividerIndex(line);
     Responsibility responsibility;
     if(collaboratorDividerIndex != -1) {
-      responsibility = new Responsibility(line.substring(0, collaboratorDividerIndex).trim());
+      responsibility = new Responsibility(line.substring(0, collaboratorDividerIndex).trim()
+          .replaceAll("\\\\:", ":"));
       responsibility.setCollaborator(line.substring(collaboratorDividerIndex+1).trim());
     } else {
       responsibility = new Responsibility(line);
@@ -59,7 +60,12 @@ public class ClassParser {
   }
 
   private int findCollaboratorDividerIndex(String line) {
-    return line.indexOf(':');
+    int index = line.indexOf(':');
+
+    while(index != -1 && line.charAt(index-1) == '\\')
+        index = line.indexOf(':', index+1);
+
+    return index;
   }
 
   private StringRange findBodyRange() {

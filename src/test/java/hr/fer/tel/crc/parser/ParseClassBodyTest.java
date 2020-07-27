@@ -78,4 +78,15 @@ class ParseClassBodyTest {
     assertThat(c.getResponsibilities().get(0).getCollaborator()).isEqualTo("colab");
   }
 
+  @Test
+  void bodyWithOneResponsibilityWithColaboratorAndResponsibilityWithColon() throws Exception {
+    Class c = new ClassParser("class x {\n" +
+        "    first \\: responsibility : colab  \n" +
+        "}").parse();
+
+    assertThat(c.getResponsibilities()).hasSize(1);
+    assertThat(c.getResponsibilities().get(0).getText()).isEqualTo("first \\: responsibility");
+    assertThat(c.getResponsibilities().get(0).getCollaborator()).isEqualTo("colab");
+  }
+
 }
