@@ -1,6 +1,7 @@
 package hr.fer.tel.crc.parser;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -45,5 +46,15 @@ class ParseClassNameTest {
     Class c = new ClassParser("class \"some class name\" as scm {}").parse();
     assertThat(c.getName()).isEqualTo("some class name");
     assertThat(c.getAlias()).isEqualTo("scm");
+  }
+
+  @Test
+  void extractClassNameWithNoName_shouldThrowException() throws Exception {
+    ParsingException e = assertThrows(ParsingException.class, () -> {
+      new ClassParser("class {}").parse();
+    });
+
+    assertThat(e.getLine()).isEqualTo(1);
+    assertThat(e.getColumn()).isEqualTo(6);
   }
 }

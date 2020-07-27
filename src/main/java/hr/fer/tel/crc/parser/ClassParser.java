@@ -44,7 +44,10 @@ public class ClassParser {
       return new StringRange(range.getStart() + 7, classNameEndIndex);
     }
 
-    return new StringRange(range.getStart() + 6, text.indexOf(' ', range.getStart() + 6));
+    StringRange nameRange = new StringRange(range.getStart() + 6, text.indexOf(' ', range.getStart() + 6));
+    if(nameRange.isEmptyRange())
+      throw new ParsingException("Class name is missing", text, range.getStart() + 6);
+    return nameRange;
   }
 
 }

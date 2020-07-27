@@ -1,15 +1,19 @@
 package hr.fer.tel.crc;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class Class {
 
   private final String name;
+
+  public Class(String name) {
+    if(name == null)
+      throw new NullPointerException("Name can not be null.");
+    this.name = name;
+  }
 
   private String alias;
 }

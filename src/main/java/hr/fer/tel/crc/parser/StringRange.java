@@ -16,7 +16,7 @@ public class StringRange {
     return text.substring(start, end);
   }
 
-  private boolean isEmptyRange() {
+  public boolean isEmptyRange() {
     return start < 0 || end < 0 || end < start;
   }
 }
