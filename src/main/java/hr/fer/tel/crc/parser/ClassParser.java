@@ -35,10 +35,16 @@ public class ClassParser {
 
   private StringRange extractAlias(StringRange range) {
     int asIndex = text.indexOf("as ", range.getStart());
-    return new StringRange(asIndex + 3, text.indexOf(' ', asIndex + 3));
+    StringRange aliasRange = new StringRange(asIndex + 3, text.indexOf(' ', asIndex + 3));
+    if(aliasRange.isEmptyRange())
+      throw new ParsingException("Missing alias", text, aliasRange.getStart());
+    return aliasRange;
   }
 
   private StringRange extractClassName(StringRange range) {
+    if(range.size() < 6)
+      throw new ParsingException("Class should start with class keyword", text, range.getStart());
+
     if(text.charAt(range.getStart() + 6) == '"') {
       int classNameEndIndex = text.indexOf('"', range.getStart() + 7);
       return new StringRange(range.getStart() + 7, classNameEndIndex);

@@ -20,7 +20,7 @@ public class ParsingException extends RuntimeException {
   private static int findColumn(String text, int offset) {
     return text.substring(0, offset).lines()
         .reduce((first, second) -> second)
-          .orElseThrow(() -> new ParsingException("No lines in input", 0, 0))
+          .orElseGet(() -> "")
           .length();
   }
 

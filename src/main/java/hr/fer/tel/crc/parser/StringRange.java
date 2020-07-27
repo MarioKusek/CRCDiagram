@@ -19,4 +19,11 @@ public class StringRange {
   public boolean isEmptyRange() {
     return start < 0 || end < 0 || end < start;
   }
+
+  public int size() {
+    if(isEmptyRange())
+      return 0;
+
+    return end-start+1;
+  }
 }
