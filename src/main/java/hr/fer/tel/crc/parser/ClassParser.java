@@ -6,15 +6,15 @@ public class ClassParser {
 
   public static Class parse(String classText) {
 
-    int bodyStartIndex = classText.indexOf("{");
+    StringRange bodyRange = StringExtractorUtil.findMatchingCurlyBraceRange(classText, classText.indexOf('{'));
 
-    String classDeclaration = classText.substring(0, bodyStartIndex);
+    StringRange classDeclarationRange = new StringRange(0, bodyRange.getStart() - 1);
 
-    StringRange nameRange = extractClassName(classDeclaration);
+    StringRange nameRange = extractClassName(classText, classDeclarationRange);
     Class crcClass = new Class(nameRange.apply(classText));
 
-    StringRange aliasRange = extractAlias(classDeclaration, new StringRange(nameRange.getEnd()+1, classDeclaration.length()));
-    crcClass.setAlias(aliasRange.apply(classDeclaration));
+    StringRange aliasRange = extractAlias(classText, new StringRange(nameRange.getEnd() + 1, classDeclarationRange.getEnd()));
+    crcClass.setAlias(aliasRange.apply(classText));
 
     return crcClass;
   }
@@ -24,12 +24,12 @@ public class ClassParser {
     return new StringRange(asIndex + 3, text.indexOf(' ', asIndex + 3));
   }
 
-  private static StringRange extractClassName(String classDeclaration) {
-    if(classDeclaration.charAt(6) == '"') {
-      int classNameEndIndex = classDeclaration.indexOf('"', 7);
-      return new StringRange(7, classNameEndIndex);
+  private static StringRange extractClassName(String text, StringRange range) {
+    if(text.charAt(range.getStart() + 6) == '"') {
+      int classNameEndIndex = text.indexOf('"', range.getStart() + 7);
+      return new StringRange(range.getStart() + 7, classNameEndIndex);
     }
 
-    return new StringRange(6, classDeclaration.indexOf(' ', 6));
+    return new StringRange(range.getStart() + 6, text.indexOf(' ', range.getStart() + 6));
   }
 }
