@@ -14,4 +14,10 @@ class ParseClassNameTest {
     assertThat(c.getName()).isEqualTo("name");
   }
 
+  @Test
+  void extractClassName2() {
+    Class c = ClassParser.parse("class name2 {}");
+    assertThat(c.getName()).isEqualTo("name2");
+  }
+
 }
