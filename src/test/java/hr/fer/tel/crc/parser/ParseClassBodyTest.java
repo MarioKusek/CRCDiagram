@@ -41,4 +41,29 @@ class ParseClassBodyTest {
     assertThat(c.getResponsibilities()).hasSize(1);
     assertThat(c.getResponsibilities().get(0).getText()).isEqualTo("first responsibility");
   }
+
+  @Test
+  void bodyWithTwoResponsibilitiesWithoutColaborator() throws Exception {
+    Class c = new ClassParser("class x {\n" +
+        "    first responsibility  \n" +
+        "    second resp  \n" +
+        "}").parse();
+
+    assertThat(c.getResponsibilities()).hasSize(2);
+    assertThat(c.getResponsibilities().get(0).getText()).isEqualTo("first responsibility");
+    assertThat(c.getResponsibilities().get(1).getText()).isEqualTo("second resp");
+  }
+
+  @Test
+  void bodyWithTwoResponsibilitiesAndEmptyLineWithoutColaborator() throws Exception {
+    Class c = new ClassParser("class x {\n" +
+        "    first responsibility  \n" +
+        "\n" +
+        "    second resp  \n" +
+        "}").parse();
+
+    assertThat(c.getResponsibilities()).hasSize(2);
+    assertThat(c.getResponsibilities().get(0).getText()).isEqualTo("first responsibility");
+    assertThat(c.getResponsibilities().get(1).getText()).isEqualTo("second resp");
+  }
 }
