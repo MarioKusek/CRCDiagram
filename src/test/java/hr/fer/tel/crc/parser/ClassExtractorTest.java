@@ -16,7 +16,11 @@ class ClassExtractorTest {
         "    responsibility : colleborator\n" +
         "    ...\n" +
         "}\n" +
-        "";
+        "\n" +
+        "class name2 {\n" +
+        "    responsibility2 : colleborator2\n" +
+        "    ...\n" +
+        "}\n";
   }
 
   @Test
@@ -26,6 +30,15 @@ class ClassExtractorTest {
             "    responsibility : colleborator\n" +
             "    ...\n" +
             "}");
+  }
+
+  @Test
+  void extractSecondClassFromInput() {
+    assertThat(ClassExtractor.extractClass(input, 58).apply(input)).isEqualTo(
+        "class name2 {\n" +
+            "    responsibility2 : colleborator2\n" +
+            "    ...\n" +
+        "}");
   }
 
 }
