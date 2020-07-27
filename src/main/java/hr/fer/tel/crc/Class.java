@@ -25,4 +25,8 @@ public class Class {
   public List<Responsibility> getResponsibilities() {
     return responsibilities;
   }
+
+  public void add(Responsibility responsibility) {
+    responsibilities.add(responsibility);
+  }
 }

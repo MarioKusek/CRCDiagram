@@ -1,6 +1,10 @@
 package hr.fer.tel.crc.parser;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import hr.fer.tel.crc.Class;
+import hr.fer.tel.crc.Responsibility;
 
 public class ClassParser {
 
@@ -26,7 +30,26 @@ public class ClassParser {
     StringRange aliasRange = extractAlias(new StringRange(nameRange.getEnd() + 1, classDeclarationRange.getEnd()));
     crcClass.setAlias(aliasRange.apply(text));
 
+    extractBody(bodyRange).stream().forEach(r -> crcClass.add(r));
+
     return crcClass;
+  }
+
+  private List<Responsibility> extractBody(StringRange bodyRange) {
+    StringRange bodyContentRange = new StringRange(bodyRange.getStart()+1, bodyRange.getEnd()-1);
+    if(bodyContentRange.isEmptyRange())
+      return List.of();
+
+    return bodyContentRange.apply(text).lines()
+      .filter(l -> !l.isBlank())
+      //.map(l -> {System.out.println("filtered: " + l); return l;})
+      .map(l -> extractResponsibility(l.trim()))
+      //.map(r -> {System.out.println("responsibility: " + r); return r;})
+      .collect(Collectors.toList());
+  }
+
+  private Responsibility extractResponsibility(String line) {
+    return new Responsibility(line);
   }
 
   private StringRange findBodyRange() {
@@ -39,7 +62,7 @@ public class ClassParser {
 
   private StringRange extractAlias(StringRange range) {
     int asIndex = text.indexOf("as ", range.getStart());
-    StringRange aliasRange = new StringRange(asIndex + 3, text.indexOf(' ', asIndex + 3));
+    StringRange aliasRange = new StringRange(asIndex + 3, text.indexOf(' ', asIndex + 3)-1);
     if(aliasRange.isEmptyRange())
       throw new ParsingException("Missing alias", text, aliasRange.getStart());
     return aliasRange;
@@ -51,10 +74,10 @@ public class ClassParser {
 
     if(text.charAt(range.getStart() + 6) == '"') {
       int classNameEndIndex = text.indexOf('"', range.getStart() + 7);
-      return new StringRange(range.getStart() + 7, classNameEndIndex);
+      return new StringRange(range.getStart() + 7, classNameEndIndex-1);
     }
 
-    StringRange nameRange = new StringRange(range.getStart() + 6, text.indexOf(' ', range.getStart() + 6));
+    StringRange nameRange = new StringRange(range.getStart() + 6, text.indexOf(' ', range.getStart() + 6)-1);
     if(nameRange.isEmptyRange())
       throw new ParsingException("Missing class name", text, range.getStart() + 6);
     return nameRange;

@@ -13,7 +13,7 @@ public class StringRange {
     if(isEmptyRange())
       return null;
 
-    return text.substring(start, end);
+    return text.substring(start, end+1);
   }
 
   public boolean isEmptyRange() {

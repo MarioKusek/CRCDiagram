@@ -31,4 +31,14 @@ class ParseClassBodyTest {
     Class c = new ClassParser("class x {}").parse();
     assertThat(c.getResponsibilities()).isEmpty();
   }
+
+  @Test
+  void bodyWithOneResponsibilityWithoutColaborator() throws Exception {
+    Class c = new ClassParser("class x {\n" +
+        "    first responsibility  \n" +
+        "}").parse();
+
+    assertThat(c.getResponsibilities()).hasSize(1);
+    assertThat(c.getResponsibilities().get(0).getText()).isEqualTo("first responsibility");
+  }
 }

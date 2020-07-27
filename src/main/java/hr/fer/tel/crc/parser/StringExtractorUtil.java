@@ -35,6 +35,6 @@ public class StringExtractorUtil {
     int startClassIndex = text.indexOf("class", startIndex);
     int endClassIndex = findMatchingCurlyBrace(text, text.indexOf("{", startClassIndex));
 
-    return new StringRange(startClassIndex, endClassIndex+1);
+    return new StringRange(startClassIndex, endClassIndex);
   }
 }
