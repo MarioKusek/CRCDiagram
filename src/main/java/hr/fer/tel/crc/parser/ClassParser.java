@@ -30,7 +30,11 @@ public class ClassParser {
   }
 
   private StringRange findBodyRange() {
-    return StringExtractorUtil.findMatchingCurlyBraceRange(text, text.indexOf('{', textRange.getStart()));
+    int openCurlyBraceIndex = text.indexOf('{', textRange.getStart());
+    if(openCurlyBraceIndex == -1)
+      throw new ParsingException("Missing class body", text, textRange.getEnd()+1);
+
+    return StringExtractorUtil.findMatchingCurlyBraceRange(text, openCurlyBraceIndex);
   }
 
   private StringRange extractAlias(StringRange range) {
