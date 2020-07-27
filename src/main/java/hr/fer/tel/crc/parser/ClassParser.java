@@ -10,19 +10,16 @@ public class ClassParser {
 
     String classDeclaration = classText.substring(0, bodyStartIndex).trim();
 
-    String name = extractClassName(classDeclaration);
-    return new Class(name);
+    StringRange nameRange = extractClassName(classDeclaration);
+    return new Class(nameRange.apply(classText));
   }
 
-  private static String extractClassName(String classDeclaration) {
-    String classNameDeclaration = classDeclaration.substring(6);
-
-    if(classNameDeclaration.startsWith("\"")) {
-      int classNameEndIndex = classNameDeclaration.indexOf('"', 1);
-      return classNameDeclaration.substring(1, classNameEndIndex);
+  private static StringRange extractClassName(String classDeclaration) {
+    if(classDeclaration.charAt(6) == '"') {
+      int classNameEndIndex = classDeclaration.indexOf('"', 7);
+      return new StringRange(7, classNameEndIndex);
     }
 
-
-    return classNameDeclaration;
+    return new StringRange(6, classDeclaration.length());
   }
 }
