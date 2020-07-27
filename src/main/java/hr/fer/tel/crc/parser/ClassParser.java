@@ -56,7 +56,7 @@ public class ClassParser {
 
     StringRange nameRange = new StringRange(range.getStart() + 6, text.indexOf(' ', range.getStart() + 6));
     if(nameRange.isEmptyRange())
-      throw new ParsingException("Class name is missing", text, range.getStart() + 6);
+      throw new ParsingException("Missing class name", text, range.getStart() + 6);
     return nameRange;
   }
 

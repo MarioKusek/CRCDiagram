@@ -54,6 +54,7 @@ class ParseClassNameTest {
       new ClassParser("class {}").parse();
     });
 
+    assertThat(e.getMessage()).startsWith("Missing class name");
     assertThat(e.getLine()).isEqualTo(1);
     assertThat(e.getColumn()).isEqualTo(6);
   }
@@ -64,6 +65,7 @@ class ParseClassNameTest {
       new ClassParser("{}").parse();
     });
 
+    assertThat(e.getMessage()).startsWith("Class should start with class keyword");
     assertThat(e.getLine()).isEqualTo(1);
     assertThat(e.getColumn()).isEqualTo(0);
   }
@@ -74,6 +76,7 @@ class ParseClassNameTest {
       new ClassParser("class x as {}").parse();
     });
 
+    assertThat(e.getMessage()).startsWith("Missing alias");
     assertThat(e.getLine()).isEqualTo(1);
     assertThat(e.getColumn()).isEqualTo(11);
   }
