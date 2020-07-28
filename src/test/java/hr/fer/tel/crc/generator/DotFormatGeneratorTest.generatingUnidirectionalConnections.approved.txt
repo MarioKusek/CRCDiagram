@@ -4,7 +4,7 @@ digraph structs {
   cl1 [label="{className2 | {- c2 resp1\l- c2 resp2 | \lclassName3}}"];
   cl2 [label="{className3 | {- c3 resp1\l- c3 resp2 | className1\l}}"];
 
-  cl0 --> cl1
-  cl1 --> cl2
-  cl2 --> cl0
+  cl0 -> cl1
+  cl1 -> cl2
+  cl2 -> cl0
 }
