@@ -37,4 +37,13 @@ class DiagramTest {
     });
   }
 
+  @Test
+  void twoClassesWithConflictingNameAndAlias() throws Exception {
+    Class cl1 = Class.builder().name("cl1").alias("a").build();
+    Class cl2 = Class.builder().name("a").build();
+    assertThrows(RuntimeException.class, () -> {
+      new Diagram(List.of(cl1, cl2));
+    });
+  }
+
 }
