@@ -69,8 +69,10 @@ public class DotGenerator {
         .collect(Collectors.joining("\\l")));
   }
 
-  private void printCollaborators(Class cl) {
-    // TODO not implemented
+  private void printCollaborators(Class cl) throws IOException {
+    print(cl.getResponsibilities().stream()
+        .map(r -> r.getCollaborator() == null ? "" : r.getCollaborator())
+        .collect(Collectors.joining("\\l")));
   }
 
   private void printConnections() {
