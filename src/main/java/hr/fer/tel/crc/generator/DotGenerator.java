@@ -45,6 +45,7 @@ public class DotGenerator {
       classMapNameToIndex.put(cl.getName(), i);
       classMapNameToIndex.put(cl.getAlias(), i);
       printClass(cl, i);
+      i++;
     }
   }
 

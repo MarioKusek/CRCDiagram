@@ -35,4 +35,14 @@ class DotFormatGeneratorTest {
     Approvals.verify(writer.toString());
   }
 
+  @Test
+  void twoClassesWithoutResponsibilities() throws Exception {
+    diagram = new Diagram(List.of(new Class("className1"), new Class("secondClassName")));
+    generator = new DotGenerator(diagram, writer);
+
+    generator.writeDiagram();
+
+    Approvals.verify(writer.toString());
+  }
+
 }
