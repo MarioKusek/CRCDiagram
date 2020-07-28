@@ -3,15 +3,23 @@ package hr.fer.tel.crc;
 import java.util.LinkedList;
 import java.util.List;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Singular;
 
+@Builder
 @Getter
 @Setter
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Class {
 
   private final String name;
   private String alias;
+
+  @Singular
   private List<Responsibility> responsibilities;
 
 

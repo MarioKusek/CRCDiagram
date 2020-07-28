@@ -28,4 +28,13 @@ class DiagramTest {
     });
   }
 
+  @Test
+  void twoClassesWithSameAlias() throws Exception {
+    Class cl1 = Class.builder().name("cl1").alias("a").build();
+    Class cl2 = Class.builder().name("cl2").alias("a").build();
+    assertThrows(RuntimeException.class, () -> {
+      new Diagram(List.of(cl1, cl2));
+    });
+  }
+
 }
