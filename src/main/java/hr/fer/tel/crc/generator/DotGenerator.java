@@ -62,7 +62,7 @@ public class DotGenerator {
     print(cl.getName());
     print(" | {");
     printResponsibilities(cl);
-    print("} | {");
+    print(" | ");
     printCollaborators(cl);
     print("}}\"];\n");
   }
