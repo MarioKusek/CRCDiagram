@@ -95,4 +95,24 @@ class DotFormatGeneratorTest {
     Approvals.verify(writer.toString());
   }
 
+  @Test
+  void twoClassesWithTwoResponsibilities() throws Exception {
+    diagram = new Diagram(List.of(
+      Class.builder()
+        .name("className1")
+        .responsibility(new Responsibility("c1 resp1"))
+        .responsibility(new Responsibility("c1 resp2"))
+        .build(),
+      Class.builder()
+        .name("className2")
+        .responsibility(new Responsibility("c2 resp1"))
+        .responsibility(new Responsibility("c2 resp2"))
+        .build()
+    ));
+    generator = new DotGenerator(diagram, writer);
+
+    generator.writeDiagram();
+
+    Approvals.verify(writer.toString());
+  }
 }
