@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.util.List;
 
 import org.approvaltests.Approvals;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import hr.fer.tel.crc.Class;
@@ -122,7 +123,7 @@ class DotFormatGeneratorTest {
         Class.builder()
           .name("className1")
           .responsibility(new Responsibility("c1 resp1", "className2"))
-          .responsibility(new Responsibility("c1 resp2"))
+          .responsibility(new Responsibility("c1 resp2", "className2"))
           .build(),
         Class.builder()
           .name("className2")
@@ -133,6 +134,28 @@ class DotFormatGeneratorTest {
           .name("className3")
           .responsibility(new Responsibility("c3 resp1", "className1"))
           .responsibility(new Responsibility("c3 resp2"))
+          .build()
+        ));
+    generator = new DotGenerator(diagram, writer);
+
+    generator.writeDiagram();
+
+    Approvals.verify(writer.toString());
+  }
+
+  @Disabled
+  @Test
+  void generatingBidirectionalConnections() throws Exception {
+    diagram = new Diagram(List.of(
+        Class.builder()
+          .name("className1")
+          .responsibility(new Responsibility("c1 resp1", "className2"))
+          .responsibility(new Responsibility("c1 resp2"))
+          .build(),
+        Class.builder()
+          .name("className2")
+          .responsibility(new Responsibility("c2 resp1"))
+          .responsibility(new Responsibility("c2 resp2", "className1"))
           .build()
         ));
     generator = new DotGenerator(diagram, writer);

@@ -97,9 +97,12 @@ public class DotGenerator {
           Class second = diagram.getClassByKey(collaborator);
           if(!isPrintedConnection(printedConnections, cl, second)) {
             if(isBidirectionalConnection(cl, second)) {
+              printedConnections.add(new Pair(cl, second));
+              printedConnections.add(new Pair(second, cl));
               println("cl" + classMapNameToIndex.get(cl.getName()) + " <--> cl" + classMapNameToIndex.get(second.getName()));
             } else {
               println("cl" + classMapNameToIndex.get(cl.getName()) + " --> cl" + classMapNameToIndex.get(second.getName()));
+              printedConnections.add(new Pair(cl, second));
             }
           }
         }
