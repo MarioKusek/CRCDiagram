@@ -76,4 +76,30 @@ class DiagramTest {
     new Diagram(List.of(cl1, cl2));
   }
 
+  @Test
+  void classWithSelfCollaboratorClass_shouldThrowException() throws Exception {
+    Class cl1 = Class.builder()
+        .name("cl1")
+        .alias("a1")
+        .responsibility(new Responsibility("r1", "cl1"))
+        .build();
+
+    RuntimeException e = assertThrows(RuntimeException.class, () -> {
+      new Diagram(List.of(cl1));
+    });
+  }
+
+  @Test
+  void classWithSelfCollaboratorAlias_shouldThrowException() throws Exception {
+    Class cl1 = Class.builder()
+        .name("cl1")
+        .alias("a1")
+        .responsibility(new Responsibility("r1", "a1"))
+        .build();
+
+    RuntimeException e = assertThrows(RuntimeException.class, () -> {
+      new Diagram(List.of(cl1));
+    });
+  }
+
 }

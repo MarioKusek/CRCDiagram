@@ -34,6 +34,9 @@ public class Diagram {
           String collaborator = r.getCollaborator();
           if(collaborator != null && getClassByKey(collaborator) == null)
             throw new RuntimeException("Class with name " + c.getName() + " has collaborator " + collaborator + " that can not be found.");
+          else if(collaborator != null && getClassByKey(collaborator) == c)
+            throw new RuntimeException("Class with name " + c.getName() + " must not have collaborator that is that class");
+
         });
       });
   }
