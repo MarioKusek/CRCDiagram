@@ -111,7 +111,18 @@ public class DotGenerator {
   }
 
   private boolean isBidirectionalConnection(Class first, Class second) {
-    return false; // TODO fix this
+    Set<Class> firstCollaborators = first.getResponsibilities().stream()
+        .map(r -> r.getCollaborator())
+        .filter(c -> c != null)
+        .map(c -> diagram.getClassByKey(c))
+        .collect(Collectors.toSet());
+    Set<Class> secondCollaborators = second.getResponsibilities().stream()
+        .map(r -> r.getCollaborator())
+        .filter(c -> c != null)
+        .map(c -> diagram.getClassByKey(c))
+        .collect(Collectors.toSet());
+
+    return firstCollaborators.contains(second) && secondCollaborators.contains(first);
   }
 
   private boolean isPrintedConnection(Set<Pair> printedConnections, Class cl, Class second) {
