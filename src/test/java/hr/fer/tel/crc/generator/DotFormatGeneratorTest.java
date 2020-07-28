@@ -117,18 +117,23 @@ class DotFormatGeneratorTest {
   }
 
   @Test
-  void twoClassesWithTwoResponsibilitiesAndCollaborators() throws Exception {
+  void generatingUnidirectionalConnections() throws Exception {
     diagram = new Diagram(List.of(
         Class.builder()
-        .name("className1")
-        .responsibility(new Responsibility("c1 resp1", "className2"))
-        .responsibility(new Responsibility("c1 resp2"))
-        .build(),
+          .name("className1")
+          .responsibility(new Responsibility("c1 resp1", "className2"))
+          .responsibility(new Responsibility("c1 resp2"))
+          .build(),
         Class.builder()
-        .name("className2")
-        .responsibility(new Responsibility("c2 resp1"))
-        .responsibility(new Responsibility("c2 resp2", "className1"))
-        .build()
+          .name("className2")
+          .responsibility(new Responsibility("c2 resp1"))
+          .responsibility(new Responsibility("c2 resp2", "className3"))
+          .build(),
+        Class.builder()
+          .name("className3")
+          .responsibility(new Responsibility("c3 resp1", "className1"))
+          .responsibility(new Responsibility("c3 resp2"))
+          .build()
         ));
     generator = new DotGenerator(diagram, writer);
 

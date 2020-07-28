@@ -3,12 +3,16 @@ package hr.fer.tel.crc.generator;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import hr.fer.tel.crc.Class;
 import hr.fer.tel.crc.Diagram;
+import hr.fer.tel.crc.Responsibility;
+import lombok.Data;
 
 public class DotGenerator {
 
@@ -75,8 +79,40 @@ public class DotGenerator {
         .collect(Collectors.joining("\\l")));
   }
 
-  private void printConnections() {
-    // TODO print connections
+  @Data
+  private static class Pair {
+    private final Class first;
+    private final Class second;
+  }
+
+  private void printConnections() throws IOException {
+    print("\n");
+
+    Set<Pair> printedConnections = new HashSet<>();
+
+    for(Class cl: diagram.getClasses()) {
+      for(Responsibility r: cl.getResponsibilities()) {
+        String collaborator = r.getCollaborator();
+        if(collaborator != null) {
+          Class second = diagram.getClassByKey(collaborator);
+          if(!isPrintedConnection(printedConnections, cl, second)) {
+            if(isBidirectionalConnection(cl, second)) {
+              println("cl" + classMapNameToIndex.get(cl.getName()) + " <--> cl" + classMapNameToIndex.get(second.getName()));
+            } else {
+              println("cl" + classMapNameToIndex.get(cl.getName()) + " --> cl" + classMapNameToIndex.get(second.getName()));
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private boolean isBidirectionalConnection(Class first, Class second) {
+    return false; // TODO fix this
+  }
+
+  private boolean isPrintedConnection(Set<Pair> printedConnections, Class cl, Class second) {
+    return printedConnections.contains(new Pair(cl, second));
   }
 
   private void decreseIndent() {
