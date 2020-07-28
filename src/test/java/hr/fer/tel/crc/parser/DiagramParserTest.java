@@ -17,12 +17,12 @@ public class DiagramParserTest {
   void setup() {
     input = "\n" +
       "class name as n {\n" +
-      "    responsibility : collaborator\n" +
+      "    responsibility : name2\n" +
       "    ...\n" +
       "}\n" +
       "\n" +
       "class name2 as n2 {\n" +
-      "    responsibility2 : collaborator2\n" +
+      "    responsibility2 : name\n" +
       "    ...\n" +
       "}\n";
   }
