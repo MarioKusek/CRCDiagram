@@ -89,6 +89,8 @@ dependencies {
     testImplementation 'org.mockito:mockito-junit-jupiter:3.4.4'
     // AssertJ
     testImplementation 'org.assertj:assertj-core:3.16.1'
+    // Test approvals
+    testImplementation 'com.approvaltests:approvaltests:9.1.0'
 }
 // to check for new dependencies run following
 // $ gradle dependencyUpdates
