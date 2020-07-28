@@ -2,7 +2,11 @@ package hr.fer.tel.crc.generator;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
+import hr.fer.tel.crc.Class;
 import hr.fer.tel.crc.Diagram;
 
 public class DotGenerator {
@@ -11,6 +15,7 @@ public class DotGenerator {
   private Writer writer;
 
   private int indent = 0;
+  private Map<String, Integer> classMapNameToIndex = new HashMap<>();
 
   public DotGenerator(Diagram diagram, Writer writer) {
     this.diagram = diagram;
@@ -33,8 +38,35 @@ public class DotGenerator {
     println("node [shape=record];");
   }
 
-  private void printClasses() {
-    // TODO print classes
+  private void printClasses() throws IOException {
+    int i = 0;
+    for (Iterator<Class> iterator = diagram.getClasses().iterator(); iterator.hasNext();) {
+      Class cl = iterator.next();
+      classMapNameToIndex.put(cl.getName(), i);
+      classMapNameToIndex.put(cl.getAlias(), i);
+      printClass(cl, i);
+    }
+  }
+
+  private void printClass(Class cl, Integer index) throws IOException {
+    printIndent();
+    print("cl");
+    print(index.toString());
+    print(" [label=\"{");
+    print(cl.getName());
+    print(" | {");
+    printResponsibilities(cl);
+    print("} | {");
+    printCollaborators(cl);
+    print("}}\"];\n");
+  }
+
+  private void printResponsibilities(Class cl) {
+    // TODO not implemented
+  }
+
+  private void printCollaborators(Class cl) {
+    // TODO not implemented
   }
 
   private void printConnections() {
@@ -56,9 +88,13 @@ public class DotGenerator {
 
   private void println(String string) throws IOException {
     printIndent();
-    writer.append(string);
+    print(string);
     writer.append("\n");
 
+  }
+
+  private void print(String string) throws IOException {
+    writer.append(string);
   }
 
   private void printIndent() throws IOException {
