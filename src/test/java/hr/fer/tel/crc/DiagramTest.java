@@ -46,4 +46,34 @@ class DiagramTest {
     });
   }
 
+  @Test
+  void classWithNonExistentCollaborator_shouldThrowException() throws Exception {
+    Class cl1 = Class.builder()
+        .name("cl1")
+        .alias("a1")
+        .responsibility(new Responsibility("r1", "cl3"))
+        .build();
+    Class cl2 = Class.builder().name("cl2").build();
+    RuntimeException e = assertThrows(RuntimeException.class, () -> {
+      new Diagram(List.of(cl1, cl2));
+    });
+
+    assertThat(e.getMessage()).isEqualTo("Class with name cl1 has collaborator cl3 that can not be found.");
+  }
+
+  @Test
+  void classesWithExistingCollaborators_shouldNotThrowException() throws Exception {
+    Class cl1 = Class.builder()
+        .name("cl1")
+        .alias("a1")
+        .responsibility(new Responsibility("r1", "cl2"))
+        .build();
+    Class cl2 = Class.builder()
+        .name("cl2")
+        .responsibility(new Responsibility("r2", "a1"))
+        .build();
+
+    new Diagram(List.of(cl1, cl2));
+  }
+
 }

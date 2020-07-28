@@ -23,6 +23,19 @@ public class Diagram {
       if(c.getAlias() != null)
         aliasses.put(c.getAlias(), c);
     });
+
+    checkCollaborators();
+  }
+
+  private void checkCollaborators() {
+    classes.stream()
+      .forEach(c -> {
+        c.getResponsibilities().stream().forEach(r -> {
+          String collaborator = r.getCollaborator();
+          if(collaborator != null && getClassByKey(collaborator) == null)
+            throw new RuntimeException("Class with name " + c.getName() + " has collaborator " + collaborator + " that can not be found.");
+        });
+      });
   }
 
   public Class getClassByKey(String key) {
