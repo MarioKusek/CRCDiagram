@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import hr.fer.tel.crc.Class;
 import hr.fer.tel.crc.Diagram;
@@ -62,8 +63,10 @@ public class DotGenerator {
     print("}}\"];\n");
   }
 
-  private void printResponsibilities(Class cl) {
-    // TODO not implemented
+  private void printResponsibilities(Class cl) throws IOException {
+    print(cl.getResponsibilities().stream()
+        .map(r -> "- " + r.getText())
+        .collect(Collectors.joining("\\l")));
   }
 
   private void printCollaborators(Class cl) {

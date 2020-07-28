@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import hr.fer.tel.crc.Class;
 import hr.fer.tel.crc.Diagram;
+import hr.fer.tel.crc.Responsibility;
 
 class DotFormatGeneratorTest {
 
@@ -38,6 +39,20 @@ class DotFormatGeneratorTest {
   @Test
   void twoClassesWithoutResponsibilities() throws Exception {
     diagram = new Diagram(List.of(new Class("className1"), new Class("secondClassName")));
+    generator = new DotGenerator(diagram, writer);
+
+    generator.writeDiagram();
+
+    Approvals.verify(writer.toString());
+  }
+
+  @Test
+  void oneClassWithResponsibility() throws Exception {
+    diagram = new Diagram(List.of(
+        Class.builder()
+          .name("className1")
+          .responsibility(new Responsibility("c1 resp1"))
+          .build()));
     generator = new DotGenerator(diagram, writer);
 
     generator.writeDiagram();
