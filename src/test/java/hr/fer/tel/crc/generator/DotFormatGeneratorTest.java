@@ -61,6 +61,20 @@ class DotFormatGeneratorTest {
   }
 
   @Test
+  void oneClassWithResponsibilityAndCollaborator() throws Exception {
+    diagram = new Diagram(List.of(
+        Class.builder()
+        .name("className1")
+        .responsibility(new Responsibility("c1 resp1", "col1"))
+        .build()));
+    generator = new DotGenerator(diagram, writer);
+
+    generator.writeDiagram();
+
+    Approvals.verify(writer.toString());
+  }
+
+  @Test
   void twoClassesWithResponsibilities() throws Exception {
     diagram = new Diagram(List.of(
       Class.builder()
