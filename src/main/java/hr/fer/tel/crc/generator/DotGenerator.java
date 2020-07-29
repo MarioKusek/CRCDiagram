@@ -59,7 +59,7 @@ public class DotGenerator {
     print("cl");
     print(index.toString());
     print(" [label=\"{");
-    print(cl.getName());
+    print(escapingString(cl.getName()));
     print(" | {");
     printResponsibilities(cl);
     print(" | ");
@@ -67,15 +67,28 @@ public class DotGenerator {
     print("}}\"];\n");
   }
 
+  /*
+   * \ --> \\ - generating
+   * \n --> \l - parsing, generating and counting
+   * " --> \" - generating
+   */
+  private String escapingString(String string) {
+    String escapedString = string.replace("\\", "\\\\");
+    escapedString = escapedString.replace("\n", "\\l");
+    escapedString = escapedString.replace("\"", "\\\"");
+
+    return escapedString;
+  }
+
   private void printResponsibilities(Class cl) throws IOException {
     print(cl.getResponsibilities().stream()
-        .map(r -> "- " + r.getText())
+        .map(r -> "- " + escapingString(r.getText()))
         .collect(Collectors.joining("\\l")));
   }
 
   private void printCollaborators(Class cl) throws IOException {
     print(cl.getResponsibilities().stream()
-        .map(r -> r.getCollaborator() == null ? "" : r.getCollaborator())
+        .map(r -> r.getCollaborator() == null ? "" : escapingString(r.getCollaborator()))
         .collect(Collectors.joining("\\l")));
   }
 

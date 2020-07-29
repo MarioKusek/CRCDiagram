@@ -164,11 +164,32 @@ class DotFormatGeneratorTest {
     Approvals.verify(writer.toString());
   }
 
+  @Test
+  void escapingText() throws Exception {
+    diagram = new Diagram(List.of(
+        Class.builder()
+        .name("className1: \"some text\"")
+        .alias("a1")
+        .responsibility(new Responsibility("c1 resp1\nsecond line", "className2"))
+        .responsibility(new Responsibility("c1 resp2"))
+        .build(),
+        Class.builder()
+        .name("className2")
+        .responsibility(new Responsibility("c2 \\resp1\nsecond line"))
+        .responsibility(new Responsibility("c2 resp2", "a1"))
+        .build()
+        ));
+    generator = new DotGenerator(diagram, writer);
+
+    generator.writeDiagram();
+
+    Approvals.verify(writer.toString());
+  }
+
   // TODO escaping text in class name, responsibility and collaborators
   /*
-   * \\ --> \\
-   * \: --> :
-   * \n --> \l
-   * " --> \"
+   * \ --> \\ - generating
+   * \n --> \l - parsing, generating and counting
+   * " --> \" - generating
    */
 }
