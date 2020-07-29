@@ -88,8 +88,21 @@ public class DotGenerator {
 
   private void printCollaborators(Class cl) throws IOException {
     print(cl.getResponsibilities().stream()
-        .map(r -> r.getCollaborator() == null ? "" : escapingString(r.getCollaborator()))
+        .map(this::createCollaboratorString)
         .collect(Collectors.joining("\\l")));
+  }
+
+  private String createCollaboratorString(Responsibility r) {
+    String collaboratorString;
+
+    if(r.getCollaborator() == null)
+      collaboratorString = "";
+    else
+      collaboratorString = escapingString(r.getCollaborator());
+
+    String linesString = "\\l".repeat((int)(r.getText().lines().count()) - 1);
+
+    return collaboratorString + linesString;
   }
 
   @Data
