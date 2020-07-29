@@ -99,9 +99,20 @@ public class DotGenerator {
             if(isBidirectionalConnection(cl, second)) {
               printedConnections.add(new Pair(cl, second));
               printedConnections.add(new Pair(second, cl));
-              println("cl" + classMapNameToIndex.get(cl.getName()) + " -> cl" + classMapNameToIndex.get(second.getName()) + " [dir=both]");
+              printIndent();
+              print("cl");
+              print(classMapNameToIndex.get(cl.getName()).toString());
+              print(" -> cl");
+              print(classMapNameToIndex.get(second.getName()).toString());
+              print(" [dir=both]");
+              println();
             } else {
-              println("cl" + classMapNameToIndex.get(cl.getName()) + " -> cl" + classMapNameToIndex.get(second.getName()));
+              printIndent();
+              print("cl");
+              print(classMapNameToIndex.get(cl.getName()).toString());
+              print(" -> cl");
+              print(classMapNameToIndex.get(second.getName()).toString());
+              println();
               printedConnections.add(new Pair(cl, second));
             }
           }
@@ -140,6 +151,10 @@ public class DotGenerator {
 
   private void increseIndent() {
     indent++;
+  }
+
+  private void println() throws IOException {
+    writer.append("\n");
   }
 
   private void println(String string) throws IOException {
