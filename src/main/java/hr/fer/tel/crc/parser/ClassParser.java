@@ -25,7 +25,7 @@ public class ClassParser {
     StringRange classDeclarationRange = new StringRange(textRange.getStart(), bodyRange.getStart() - 1);
 
     StringRange nameRange = extractClassName(classDeclarationRange);
-    Class crcClass = new Class(nameRange.apply(text));
+    Class crcClass = new Class(unescape(nameRange.apply(text)));
 
     StringRange aliasRange = extractAlias(new StringRange(nameRange.getEnd() + 1, classDeclarationRange.getEnd()));
     crcClass.setAlias(aliasRange.apply(text));
@@ -33,6 +33,14 @@ public class ClassParser {
     extractBody(bodyRange).stream().forEach(r -> crcClass.add(r));
 
     return crcClass;
+  }
+
+  private String unescape(String string) {
+    String unescapedString = string.replace("\\\"", "\"");
+    unescapedString = unescapedString.replace("\\n", "\n");
+    unescapedString = unescapedString.replace("\\\\", "\\");
+
+    return unescapedString;
   }
 
   private List<Responsibility> extractBody(StringRange bodyRange) {
@@ -94,7 +102,7 @@ public class ClassParser {
       throw new ParsingException("Class should start with class keyword", text, range.getStart());
 
     if(text.charAt(range.getStart() + 6) == '"') {
-      int classNameEndIndex = text.indexOf('"', range.getStart() + 7);
+      int classNameEndIndex = findEndOfClassName(range.getStart() + 7);
       return new StringRange(range.getStart() + 7, classNameEndIndex-1);
     }
 
@@ -102,6 +110,15 @@ public class ClassParser {
     if(nameRange.isEmptyRange())
       throw new ParsingException("Missing class name", text, range.getStart() + 6);
     return nameRange;
+  }
+
+  private int findEndOfClassName(int startIndex) {
+    int index = text.indexOf('"', startIndex);
+
+    while(text.charAt(index-1) == '\\')
+      index = text.indexOf('"', index+1);
+
+    return index;
   }
 
 }

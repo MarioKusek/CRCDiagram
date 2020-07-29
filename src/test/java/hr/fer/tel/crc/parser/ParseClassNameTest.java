@@ -44,6 +44,13 @@ class ParseClassNameTest {
   }
 
   @Test
+  void extractClassNameWithEscapingSequences() throws Exception {
+    Class c = new ClassParser("class \"class\\\"Name \\\\ \\n<<interface>> \" as cn {}").parse();
+    assertThat(c.getName()).isEqualTo("class\"Name \\ \n<<interface>> ");
+    assertThat(c.getAlias()).isEqualTo("cn");
+  }
+
+  @Test
   void extractClassNameWithSpacesAndAlias() throws Exception {
     Class c = new ClassParser("class \"some class name\" as scm {}").parse();
     assertThat(c.getName()).isEqualTo("some class name");
