@@ -25,7 +25,7 @@ public class ClassParser {
     StringRange classDeclarationRange = new StringRange(textRange.getStart(), bodyRange.getStart() - 1);
 
     StringRange nameRange = extractClassName(classDeclarationRange);
-    Class crcClass = new Class(unescape(nameRange.apply(text)));
+    Class crcClass = new Class(unescapeClassName(nameRange.apply(text)));
 
     StringRange aliasRange = extractAlias(new StringRange(nameRange.getEnd() + 1, classDeclarationRange.getEnd()));
     crcClass.setAlias(aliasRange.apply(text));
@@ -35,7 +35,7 @@ public class ClassParser {
     return crcClass;
   }
 
-  private String unescape(String string) {
+  private String unescapeClassName(String string) {
     String unescapedString = string.replace("\\\"", "\"");
     unescapedString = unescapedString.replace("\\n", "\n");
     unescapedString = unescapedString.replace("\\\\", "\\");
@@ -58,14 +58,18 @@ public class ClassParser {
     int collaboratorDividerIndex = findCollaboratorDividerIndex(line);
     Responsibility responsibility;
     if(collaboratorDividerIndex != -1) {
-      responsibility = new Responsibility(line.substring(0, collaboratorDividerIndex).trim()
-          .replaceAll("\\\\:", ":")
-          .replace("\\\\", "\\"));
+      responsibility = new Responsibility(unescapeResponsibility(line.substring(0, collaboratorDividerIndex).trim()));
       responsibility.setCollaborator(line.substring(collaboratorDividerIndex+1).trim());
     } else {
       responsibility = new Responsibility(line);
     }
     return responsibility;
+  }
+
+  private String unescapeResponsibility(String string) {
+    return string.replace("\\:", ":")
+        .replace("\\\\", "\\")
+        .replace("\\n", "\n");
   }
 
   private int findCollaboratorDividerIndex(String line) {
