@@ -1,6 +1,5 @@
 # TODO list
 
-* escaping text in dot format
 * running graphviz
   * dot -ofileName.png -T png fileName.dot
 * create command line parser
