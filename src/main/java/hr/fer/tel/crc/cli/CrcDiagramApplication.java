@@ -51,6 +51,11 @@ public class CrcDiagramApplication {
         .argName("file")
         .build());
 
+    options.addOption(Option.builder("f")
+        .desc("image format - png (default) or svg")
+        .hasArg()
+        .argName("format")
+        .build());
   }
 
   public void parseInput(String[] args) throws ParseException, IOException, InterruptedException {
