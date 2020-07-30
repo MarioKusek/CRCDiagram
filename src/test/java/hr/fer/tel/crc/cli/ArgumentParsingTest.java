@@ -155,7 +155,7 @@ class ArgumentParsingTest {
   }
 
   @Test
-  void caseInsensitiveFileFormatIsExtracetd() throws Exception {
+  void caseInsensitiveFileFormatIsExtracted() throws Exception {
     app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
         "-f", "svG"));
     app.convert();
@@ -184,5 +184,14 @@ class ArgumentParsingTest {
     assertThat(exitCode).isEqualTo(100);
   }
 
+  @Test
+  void dotPathIsExtracted() throws Exception {
+    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
+        "-dotPath", "/some/path"));
+    app.convert();
+
+    assertThat(dotPath).isEqualTo("/some/path");
+    assertThat(exitCode).isEqualTo(0);
+  }
 
 }

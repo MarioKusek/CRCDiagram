@@ -105,6 +105,9 @@ public class CrcDiagramApplication {
           }
         }
 
+        if (line.hasOption("dotPath")) {
+          dotPath = line.getOptionValue("dotPath");
+        }
       }
     } catch (MissingArgumentException e) {
       writer.println(e.getMessage());
