@@ -103,7 +103,6 @@ class ArgumentParsingTest {
     assertThat(exitCode).isEqualTo(2);
   }
 
-  @Test
   void outputFileMissing() throws Exception {
     app.parseInput(Arrays.array("-i", "someInput", "-o"));
     app.convert();
@@ -113,5 +112,15 @@ class ArgumentParsingTest {
         "Missing argument for option: o\n\n" + getHelpMessage());
     assertThat(exitCode).isEqualTo(100);
   }
+
+  @Test
+  void outputFileExtracted() throws Exception {
+    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png"));
+    app.convert();
+
+    assertThat(outputFile).isEqualTo("someOutputFile.png");
+    assertThat(exitCode).isEqualTo(0);
+  }
+
 
 }

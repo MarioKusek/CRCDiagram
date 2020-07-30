@@ -76,6 +76,8 @@ public class CrcDiagramApplication {
           printHelp();
           exitApp(2);
           return;
+        } else {
+          outputFile = line.getOptionValue("o");
         }
 
 
