@@ -56,6 +56,13 @@ public class CrcDiagramApplication {
         .hasArg()
         .argName("format")
         .build());
+
+    options.addOption(Option.builder("dotPath")
+        .desc("path to dot command")
+        .hasArg()
+        .argName("path")
+        .build());
+
   }
 
   public void parseInput(String[] args) throws ParseException, IOException, InterruptedException {

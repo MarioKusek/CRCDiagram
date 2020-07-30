@@ -163,5 +163,16 @@ class ArgumentParsingTest {
     assertThat(exitCode).isEqualTo(0);
   }
 
+  @Test
+  void dotPathMissingOption() throws Exception {
+    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png", "-dotPath"));
+    app.convert();
+
+    String printedText = writer.toString();
+    assertThat(printedText).isEqualTo(
+        "Missing argument for option: dotPath\n\n" + getHelpMessage());
+    assertThat(exitCode).isEqualTo(100);
+  }
+
 
 }
