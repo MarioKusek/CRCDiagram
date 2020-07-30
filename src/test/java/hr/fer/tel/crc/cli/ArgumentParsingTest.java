@@ -76,4 +76,13 @@ class ArgumentParsingTest {
 
   }
 
+  @Test
+  void inputFileExtracted() throws Exception {
+    app.parseInput(Arrays.array("-i", "someInputFile.crc"));
+    app.convert();
+
+    assertThat(inputFile).isEqualTo("someInputFile.crc");
+    assertThat(exitCode).isEqualTo(0);
+  }
+
 }

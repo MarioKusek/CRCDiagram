@@ -37,6 +37,13 @@ public class CrcDiagramApplication {
     options.addOption(Option.builder("h")
       .desc("help")
       .build());
+
+    options.addOption(Option.builder("i")
+      .desc("input file in CRC format")
+      .hasArg()
+      .argName("file")
+      .build());
+
   }
 
   public void parseInput(String[] args) throws ParseException, IOException, InterruptedException {
@@ -51,7 +58,10 @@ public class CrcDiagramApplication {
         writer.println("-i is required option\n");
         printHelp();
         exitApp(1);
+      } else {
+        inputFile = line.getOptionValue("i");
       }
+
     }
 
     // TODO
@@ -62,7 +72,7 @@ public class CrcDiagramApplication {
   }
 
   public void convert() throws IOException, InterruptedException {
-    // TODO
+    converter.convertToImage(inputFile, outputFile, format, dotPath);
   }
 
   void printHelp() {
