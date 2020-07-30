@@ -98,7 +98,7 @@ dependencies {
 }
 
 graal {
-    mainClass 'hr.fer.tel.crc.cli.CrcDiagramConverter'
+    mainClass 'hr.fer.tel.crc.cli.CrcDiagramApplication'
     outputName 'crcDiagram'
     graalVersion '20.1.0'
     javaVersion '11'
@@ -106,8 +106,8 @@ graal {
 
 task fatJar(type: Jar) {
 	manifest {
-    attributes 'Main-Class': 'hr.fer.tel.crc.cli.CrcDiagramConverter'
-  }
+    	attributes 'Main-Class': 'hr.fer.tel.crc.cli.CrcDiagramApplication'
+  	}
   baseName = project.name + '-all'
   from({configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }}) {
   	// remove all signature files
