@@ -8,4 +8,3 @@
     * -f file_format - png or svg
     * -dotPath path - path to dot file
     * -v - verbose
-* create native executable with graal
