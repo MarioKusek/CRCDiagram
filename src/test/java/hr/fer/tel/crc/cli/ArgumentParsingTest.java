@@ -66,7 +66,7 @@ class ArgumentParsingTest {
   }
 
   @Test
-  void inputFileMissing() throws Exception {
+  void inputOptionMissing() throws Exception {
     app.parseInput(Arrays.array());
 
     String printedText = writer.toString();
@@ -84,5 +84,4 @@ class ArgumentParsingTest {
     assertThat(inputFile).isEqualTo("someInputFile.crc");
     assertThat(exitCode).isEqualTo(0);
   }
-
 }
