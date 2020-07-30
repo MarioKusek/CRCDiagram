@@ -87,6 +87,17 @@ public class CrcDiagramApplication {
 
         format = FileFormat.PNG; // default file format
 
+        if (line.hasOption("f")) {
+          try {
+            format = FileFormat.valueOf(line.getOptionValue("f").toUpperCase());
+          } catch (IllegalArgumentException e) {
+            writer.println("Option -f need to have specific values.\n");
+            printHelp();
+            exitApp(3);
+            return;
+          }
+        }
+
       }
     } catch (MissingArgumentException e) {
       writer.println(e.getMessage());

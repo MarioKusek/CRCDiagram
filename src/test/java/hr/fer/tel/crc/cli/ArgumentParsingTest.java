@@ -142,5 +142,17 @@ class ArgumentParsingTest {
     assertThat(exitCode).isEqualTo(100);
   }
 
+  @Test
+  void fileFormatWrongOption() throws Exception {
+    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
+        "-f", "wrong"));
+    app.convert();
+
+    String printedText = writer.toString();
+    assertThat(printedText).isEqualTo(
+        "Option -f need to have specific values.\n\n" + getHelpMessage());
+    assertThat(exitCode).isEqualTo(3);
+  }
+
 
 }
