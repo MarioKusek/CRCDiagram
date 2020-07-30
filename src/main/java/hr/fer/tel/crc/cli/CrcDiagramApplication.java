@@ -132,5 +132,13 @@ public class CrcDiagramApplication {
         "\nTypical usage: crcDiagram -i input_file -f png -o output_file\n"
             + "If dot can not be found add parameter with path to it \ne.g. \"-dotPath /usr/local/bin\"");
   }
+
+  public static void main(String[] args) throws Exception {
+    CrcDiagramConverter converter = new CrcDiagramConverterImpl();
+
+    CrcDiagramApplication app = new CrcDiagramApplication(new PrintWriter(System.out, true), converter);
+    app.parseInput(args);
+    app.convert();
+  }
 }
 
