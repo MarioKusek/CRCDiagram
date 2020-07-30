@@ -66,12 +66,11 @@ class ArgumentParsingTest {
   }
 
   @Test
-  void inputOptionMissing() throws Exception {
+  void inputFileOptionMissing() throws Exception {
     app.parseInput(Arrays.array());
 
     String printedText = writer.toString();
-    assertThat(printedText).startsWith("-i is required option\n");
-    assertThat(printedText).endsWith(getHelpMessage());
+    assertThat(printedText).isEqualTo("-i is required option\n\n" + getHelpMessage());
     assertThat(exitCode).isEqualTo(1);
 
   }
