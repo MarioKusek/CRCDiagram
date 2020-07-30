@@ -17,6 +17,7 @@ plugins {
     id 'eclipse'
     id 'com.github.ben-manes.versions' version '0.29.0' // find new versions of dependency task: dependencyUpdates
     id 'com.adarshr.test-logger' version '2.1.0' // log tests in console
+    id "io.freefair.lombok" version "5.1.0"
 }
 
 repositories {
@@ -66,8 +67,8 @@ configurations {
 dependencies {
     // lombok
     //   builders - https://www.baeldung.com/lombok-builder
-    compileOnly 'org.projectlombok:lombok:1.18.12'
-    annotationProcessor 'org.projectlombok:lombok'
+    //compileOnly 'org.projectlombok:lombok:1.18.12'
+    //annotationProcessor 'org.projectlombok:lombok'
 
     // Apache Commons Lang3
     //   equals, hashcode, toString builders - http://www.java2s.com/Tutorial/Java/0500__Apache-Common/EqualsBuilderreflectionEquals.htm
