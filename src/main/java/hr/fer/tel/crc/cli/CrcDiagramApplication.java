@@ -7,6 +7,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -48,20 +49,27 @@ public class CrcDiagramApplication {
 
   public void parseInput(String[] args) throws ParseException, IOException, InterruptedException {
 
-    CommandLineParser parser = new DefaultParser();
-    CommandLine line = parser.parse(options, args);
+    try {
+      CommandLineParser parser = new DefaultParser();
+      CommandLine line = parser.parse(options, args);
 
-    if (line.hasOption("h")) {
-      printHelp();
-    } else {
-      if (!line.hasOption("i")) {
-        writer.println("-i is required option\n");
+      if (line.hasOption("h")) {
         printHelp();
-        exitApp(1);
       } else {
-        inputFile = line.getOptionValue("i");
-      }
+        if (!line.hasOption("i")) {
+          writer.println("-i is required option\n");
+          printHelp();
+          exitApp(1);
+        } else {
+            inputFile = line.getOptionValue("i");
+        }
 
+      }
+    } catch (MissingArgumentException e) {
+      writer.println(e.getMessage());
+      writer.println();
+      printHelp();
+      exitApp(100);
     }
 
     // TODO

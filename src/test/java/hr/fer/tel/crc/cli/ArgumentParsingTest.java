@@ -77,6 +77,17 @@ class ArgumentParsingTest {
   }
 
   @Test
+  void inputFileMissing() throws Exception {
+    app.parseInput(Arrays.array("-i"));
+    app.convert();
+
+    String printedText = writer.toString();
+    assertThat(printedText).isEqualTo(
+        "Missing argument for option: i\n\n" + getHelpMessage());
+    assertThat(exitCode).isEqualTo(100);
+  }
+
+  @Test
   void inputFileExtracted() throws Exception {
     app.parseInput(Arrays.array("-i", "someInputFile.crc"));
     app.convert();
