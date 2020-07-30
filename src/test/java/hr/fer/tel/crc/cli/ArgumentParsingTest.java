@@ -52,13 +52,16 @@ class ArgumentParsingTest {
 
   @Test
   void help() throws Exception {
+    app.parseInput(Arrays.array("-h"));
+
+    assertThat(writer.toString()).isEqualTo(getHelpMessage());
+  }
+
+  private String getHelpMessage() {
     StringWriter sw = new StringWriter();
     CrcDiagramApplication a = new CrcDiagramApplication(new PrintWriter(sw, true), null);
     a.printHelp();
-
-    app.parseInput(Arrays.array("-h"));
-
-    assertThat(writer.toString()).isEqualTo(sw.toString());
+    return sw.toString();
   }
 
 }
