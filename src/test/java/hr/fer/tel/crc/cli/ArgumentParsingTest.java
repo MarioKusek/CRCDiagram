@@ -154,5 +154,14 @@ class ArgumentParsingTest {
     assertThat(exitCode).isEqualTo(3);
   }
 
+  @Test
+  void defaultDotPathIsNull() throws Exception {
+    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png"));
+    app.convert();
+
+    assertThat(dotPath).isNull();
+    assertThat(exitCode).isEqualTo(0);
+  }
+
 
 }
