@@ -122,5 +122,14 @@ class ArgumentParsingTest {
     assertThat(exitCode).isEqualTo(0);
   }
 
+  @Test
+  void defaultFileFormatIsPng() throws Exception {
+    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png"));
+    app.convert();
+
+    assertThat(format).isEqualTo(FileFormat.PNG);
+    assertThat(exitCode).isEqualTo(0);
+  }
+
 
 }

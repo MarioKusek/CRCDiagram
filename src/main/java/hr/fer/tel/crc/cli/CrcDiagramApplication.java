@@ -80,6 +80,7 @@ public class CrcDiagramApplication {
           outputFile = line.getOptionValue("o");
         }
 
+        format = FileFormat.PNG; // default file format
 
       }
     } catch (MissingArgumentException e) {
@@ -88,8 +89,6 @@ public class CrcDiagramApplication {
       printHelp();
       exitApp(100);
     }
-
-    // TODO
   }
 
   void exitApp(int exitCode) {
