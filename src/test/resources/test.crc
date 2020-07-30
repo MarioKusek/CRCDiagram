@@ -1,0 +1,13 @@
+class "Igrač (preglednik)" as i {
+  unosi ime : ki
+}
+
+class "Kontroler igara" as ki {
+  prima unos korisničkog imena i pamti ga (sjednica)
+  dohvaća popis igara : ri
+  prikazuje popis igara
+}
+
+class "Repozitorij igara" as ri {
+  zna popis igara
+}
