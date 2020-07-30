@@ -155,6 +155,16 @@ class ArgumentParsingTest {
   }
 
   @Test
+  void caseInsensitiveFileFormatIsExtracetd() throws Exception {
+    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
+        "-f", "svG"));
+    app.convert();
+
+    assertThat(format).isEqualTo(FileFormat.SVG);
+    assertThat(exitCode).isEqualTo(0);
+  }
+
+  @Test
   void defaultDotPathIsNull() throws Exception {
     app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png"));
     app.convert();
