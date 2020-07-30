@@ -55,6 +55,7 @@ class ArgumentParsingTest {
     app.parseInput(Arrays.array("-h"));
 
     assertThat(writer.toString()).isEqualTo(getHelpMessage());
+    assertThat(exitCode).isEqualTo(0);
   }
 
   private String getHelpMessage() {
@@ -62,6 +63,17 @@ class ArgumentParsingTest {
     CrcDiagramApplication a = new CrcDiagramApplication(new PrintWriter(sw, true), null);
     a.printHelp();
     return sw.toString();
+  }
+
+  @Test
+  void inputFileMissing() throws Exception {
+    app.parseInput(Arrays.array());
+
+    String printedText = writer.toString();
+    assertThat(printedText).startsWith("-i is required option\n");
+    assertThat(printedText).endsWith(getHelpMessage());
+    assertThat(exitCode).isEqualTo(1);
+
   }
 
 }

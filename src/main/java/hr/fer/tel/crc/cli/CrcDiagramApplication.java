@@ -46,6 +46,12 @@ public class CrcDiagramApplication {
 
     if (line.hasOption("h")) {
       printHelp();
+    } else {
+      if (!line.hasOption("i")) {
+        writer.println("-i is required option\n");
+        printHelp();
+        exitApp(1);
+      }
     }
 
     // TODO
