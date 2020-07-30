@@ -72,7 +72,6 @@ class ArgumentParsingTest {
     String printedText = writer.toString();
     assertThat(printedText).isEqualTo("-i is required option\n\n" + getHelpMessage());
     assertThat(exitCode).isEqualTo(1);
-
   }
 
   @Test
@@ -102,6 +101,17 @@ class ArgumentParsingTest {
     String printedText = writer.toString();
     assertThat(printedText).isEqualTo("-o is required option\n\n" + getHelpMessage());
     assertThat(exitCode).isEqualTo(2);
+  }
+
+  @Test
+  void outputFileMissing() throws Exception {
+    app.parseInput(Arrays.array("-i", "someInput", "-o"));
+    app.convert();
+
+    String printedText = writer.toString();
+    assertThat(printedText).isEqualTo(
+        "Missing argument for option: o\n\n" + getHelpMessage());
+    assertThat(exitCode).isEqualTo(100);
   }
 
 }

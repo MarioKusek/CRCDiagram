@@ -45,6 +45,12 @@ public class CrcDiagramApplication {
       .argName("file")
       .build());
 
+    options.addOption(Option.builder("o")
+        .desc("output file - generated image")
+        .hasArg()
+        .argName("file")
+        .build());
+
   }
 
   public void parseInput(String[] args) throws ParseException, IOException, InterruptedException {
