@@ -60,9 +60,18 @@ public class CrcDiagramApplication {
           writer.println("-i is required option\n");
           printHelp();
           exitApp(1);
+          return;
         } else {
             inputFile = line.getOptionValue("i");
         }
+
+        if (!line.hasOption("o")) {
+          writer.println("-o is required option\n");
+          printHelp();
+          exitApp(2);
+          return;
+        }
+
 
       }
     } catch (MissingArgumentException e) {

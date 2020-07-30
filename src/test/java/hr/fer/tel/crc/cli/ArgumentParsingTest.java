@@ -88,11 +88,21 @@ class ArgumentParsingTest {
   }
 
   @Test
-  void inputFileExtracted() throws Exception {
+  void inputFileExtractedButOutputIsMissing() throws Exception {
     app.parseInput(Arrays.array("-i", "someInputFile.crc"));
     app.convert();
 
     assertThat(inputFile).isEqualTo("someInputFile.crc");
-    assertThat(exitCode).isEqualTo(0);
+    assertThat(exitCode).isNotEqualTo(0);
   }
+
+  @Test
+  void outputFileOptionMissing() throws Exception {
+    app.parseInput(Arrays.array("-i", "someFile"));
+
+    String printedText = writer.toString();
+    assertThat(printedText).isEqualTo("-o is required option\n\n" + getHelpMessage());
+    assertThat(exitCode).isEqualTo(2);
+  }
+
 }
