@@ -1,10 +1,7 @@
 # TODO list
 
-* create command line parser
-  * http://commons.apache.org/proper/commons-cli/introduction.html
-  * options:
-    * -i input_file - crc file
-    * -o output_file - image
-    * -f file_format - png or svg
-    * -dotPath path - path to dot file
-    * -v - verbose
+* BUG alias is in figure as collaborator
+  * either put alias in class name [alias] - this will be shorter
+  * or change alias for class name
+* BUG last responsibility and collaborator are not left justified
+* BUG last collaborator is not at the bottom
