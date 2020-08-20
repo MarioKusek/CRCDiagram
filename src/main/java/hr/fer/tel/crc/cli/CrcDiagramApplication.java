@@ -110,7 +110,6 @@ public class CrcDiagramApplication {
         writer.println("Option -f need to have specific values.\n");
         printHelp();
         exitApp(3);
-        return;
       }
     }
 
