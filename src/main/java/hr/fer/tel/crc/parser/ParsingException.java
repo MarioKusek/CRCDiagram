@@ -14,7 +14,7 @@ public class ParsingException extends RuntimeException {
   }
 
   public ParsingException(String message, String text, int offset) {
-    this(message, findLine(text, offset), findColumn(text, offset));
+    this(message, findLine(text), findColumn(text, offset));
   }
 
   private static int findColumn(String text, int offset) {
@@ -24,7 +24,7 @@ public class ParsingException extends RuntimeException {
           .length();
   }
 
-  private static long findLine(String text, int offset) {
+  private static long findLine(String text) {
     return text.lines().count();
   }
 
