@@ -6,8 +6,8 @@ import java.util.Map;
 
 public class Diagram {
 
-  private List<Class> classes;
-  private Map<String, Class> aliasses;
+  private final List<Class> classes;
+  private final Map<String, Class> aliasses;
 
   public Diagram(List<Class> classes) {
     this.classes = classes;
