@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -43,8 +42,7 @@ public class DotGenerator {
 
   private void printClasses() throws IOException {
     int i = 0;
-    for (Iterator<Class> iterator = diagram.getClasses().iterator(); iterator.hasNext();) {
-      Class cl = iterator.next();
+    for (Class cl: diagram.getClasses()) {
       classMapNameToIndex.put(cl.getName(), i);
       classMapNameToIndex.put(cl.getAlias(), i);
       printClass(cl, i);
