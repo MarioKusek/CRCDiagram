@@ -97,7 +97,6 @@ public class CrcDiagramApplication {
       writer.println("-o is required option\n");
       printHelp();
       exitApp(2);
-      return;
     } else {
       outputFile = line.getOptionValue("o");
     }
