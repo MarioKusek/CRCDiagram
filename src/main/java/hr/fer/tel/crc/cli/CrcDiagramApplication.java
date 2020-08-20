@@ -65,11 +65,11 @@ public class CrcDiagramApplication {
 
   }
 
-  public void parseInput(String... args) throws ParseException, IOException, InterruptedException {
+  public void parseInput(String... args) throws ParseException {
 
     try {
-      CommandLineParser parser = new DefaultParser();
-      CommandLine line = parser.parse(options, args);
+      final CommandLineParser parser = new DefaultParser();
+      final CommandLine line = parser.parse(options, args);
 
       if (line.hasOption("h")) {
         printHelp();
@@ -85,20 +85,20 @@ public class CrcDiagramApplication {
   }
 
   private void fillInArguments(CommandLine line) {
-    if (!line.hasOption("i")) {
+    if (line.hasOption("i")) {
+        inputFile = line.getOptionValue("i");
+    } else {
       writer.println("-i is required option\n");
       printHelp();
       exitApp(1);
-    } else {
-        inputFile = line.getOptionValue("i");
     }
 
-    if (!line.hasOption("o")) {
+    if (line.hasOption("o")) {
+      outputFile = line.getOptionValue("o");
+    } else {
       writer.println("-o is required option\n");
       printHelp();
       exitApp(2);
-    } else {
-      outputFile = line.getOptionValue("o");
     }
 
     format = FileFormat.PNG; // default file format
@@ -127,7 +127,7 @@ public class CrcDiagramApplication {
   }
 
   void printHelp() {
-    HelpFormatter formatter = new HelpFormatter();
+    final HelpFormatter formatter = new HelpFormatter();
     formatter.printHelp(writer, formatter.getWidth(), "crcDiagram [OPTIONS]", "", options,
         formatter.getLeftPadding(), formatter.getDescPadding(),
         "\nTypical usage: crcDiagram -i input_file -f png -o output_file\n"
@@ -135,9 +135,9 @@ public class CrcDiagramApplication {
   }
 
   public static void main(String[] args) throws Exception {
-    CrcDiagramConverter converter = new CrcDiagramConverterImpl();
+    final CrcDiagramConverter converter = new CrcDiagramConverterImpl();
 
-    CrcDiagramApplication app = new CrcDiagramApplication(new PrintWriter(System.out, true), converter);
+    final CrcDiagramApplication app = new CrcDiagramApplication(new PrintWriter(System.out, true), converter);
     app.parseInput(args);
     app.convert();
   }

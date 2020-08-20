@@ -19,7 +19,7 @@ public class DotGenerator {
   private Diagram diagram;
   private Writer writer;
 
-  private int indent = 0;
+  private int indent;
   private Map<String, Integer> classMapNameToIndex = new HashMap<>();
 
   public DotGenerator(Diagram diagram, Writer writer) {
@@ -33,8 +33,6 @@ public class DotGenerator {
     printConnections();
 
     printSuffix();
-
-    this.writer = null;
   }
 
   private void printPrefix() throws IOException {
