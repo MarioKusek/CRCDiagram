@@ -21,10 +21,10 @@ class ArgumentParsingTest {
   private String outputFile;
   private FileFormat format;
   private String dotPath;
-  private boolean convertCalled = false;
 
   private TestExitException exitException;
   private StringWriter writer;
+  private String[] parameters;
 
   class Converter implements CrcDiagramConverter {
     @Override
@@ -34,7 +34,6 @@ class ArgumentParsingTest {
           ArgumentParsingTest.this.outputFile = outputFile;
           ArgumentParsingTest.this.format = format;
           ArgumentParsingTest.this.dotPath = dotPath;
-          convertCalled = true;
     }
   }
 
@@ -75,33 +74,30 @@ class ArgumentParsingTest {
 
   @Test
   void inputFileOptionMissing() throws Exception {
-    exitException = assertThrows(TestExitException.class,  () -> {
-      app.parseInput(Arrays.array());
-    });
+    parameters = Arrays.array();
 
-    String printedText = writer.toString();
-    assertThat(printedText).isEqualTo("-i is required option\n\n" + getHelpMessage());
+    exitException = assertThrows(TestExitException.class,  () -> app.parseInput(parameters));
+
+    assertThat(writer).hasToString("-i is required option\n\n" + getHelpMessage());
     assertThat(exitException.exitCode).isEqualTo(1);
   }
 
   @Test
   void inputFileMissing() throws Exception {
-    exitException = assertThrows(TestExitException.class, () -> {
-      app.parseInput(Arrays.array("-i"));
-    });
+    parameters = Arrays.array("-i");
+
+    exitException = assertThrows(TestExitException.class, () -> app.parseInput(parameters));
     app.convert();
 
-    String printedText = writer.toString();
-    assertThat(printedText).isEqualTo(
-        "Missing argument for option: i\n\n" + getHelpMessage());
+    assertThat(writer).hasToString("Missing argument for option: i\n\n" + getHelpMessage());
     assertThat(exitException.exitCode).isEqualTo(100);
   }
 
   @Test
   void inputFileExtractedButOutputIsMissing() throws Exception {
-    exitException = assertThrows(TestExitException.class, () -> {
-      app.parseInput(Arrays.array("-i", "someInputFile.crc"));
-    });
+    parameters = Arrays.array("-i", "someInputFile.crc");
+
+    assertThrows(TestExitException.class, () -> app.parseInput(parameters));
     app.convert();
 
     assertThat(inputFile).isEqualTo("someInputFile.crc");
@@ -109,31 +105,30 @@ class ArgumentParsingTest {
 
   @Test
   void outputFileOptionMissing() throws Exception {
-    exitException = assertThrows(TestExitException.class, () -> {
-      app.parseInput(Arrays.array("-i", "someFile"));
-    });
+    parameters = Arrays.array("-i", "someFile");
 
-    String printedText = writer.toString();
-    assertThat(printedText).isEqualTo("-o is required option\n\n" + getHelpMessage());
+    exitException = assertThrows(TestExitException.class, () -> app.parseInput(parameters));
+
+    assertThat(writer).hasToString("-o is required option\n\n" + getHelpMessage());
     assertThat(exitException.exitCode).isEqualTo(2);
   }
 
   @Test
   void outputFileMissing() throws Exception {
-    exitException = assertThrows(TestExitException.class, () -> {
-      app.parseInput(Arrays.array("-i", "someInput", "-o"));
-    });
+    parameters = Arrays.array("-i", "someInput", "-o");
+
+    exitException = assertThrows(TestExitException.class, () -> app.parseInput(parameters));
     app.convert();
 
-    String printedText = writer.toString();
-    assertThat(printedText).isEqualTo(
-        "Missing argument for option: o\n\n" + getHelpMessage());
+    assertThat(writer).hasToString("Missing argument for option: o\n\n" + getHelpMessage());
     assertThat(exitException.exitCode).isEqualTo(100);
   }
 
   @Test
   void outputFileExtracted() throws Exception {
-    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png"));
+    parameters = Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png");
+
+    app.parseInput(parameters);
     app.convert();
 
     assertThat(outputFile).isEqualTo("someOutputFile.png");
@@ -141,7 +136,9 @@ class ArgumentParsingTest {
 
   @Test
   void defaultFileFormatIsPng() throws Exception {
-    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png"));
+    parameters = Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png");
+
+    app.parseInput(parameters);
     app.convert();
 
     assertThat(format).isEqualTo(FileFormat.PNG);
@@ -149,35 +146,33 @@ class ArgumentParsingTest {
 
   @Test
   void fileFormatMissingOption() throws Exception {
-    exitException = assertThrows(TestExitException.class, () -> {
-      app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png", "-f"));
-    });
+    parameters = Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png", "-f");
+
+    exitException = assertThrows(TestExitException.class, () -> app.parseInput(parameters));
     app.convert();
 
-    String printedText = writer.toString();
-    assertThat(printedText).isEqualTo(
-        "Missing argument for option: f\n\n" + getHelpMessage());
+    assertThat(writer).hasToString("Missing argument for option: f\n\n" + getHelpMessage());
     assertThat(exitException.exitCode).isEqualTo(100);
   }
 
   @Test
   void fileFormatWrongOption() throws Exception {
-    exitException = assertThrows(TestExitException.class, () -> {
-      app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
-          "-f", "wrong"));
-    });
+    parameters = Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
+        "-f", "wrong");
+
+    exitException = assertThrows(TestExitException.class, () -> app.parseInput(parameters));
     app.convert();
 
-    String printedText = writer.toString();
-    assertThat(printedText).isEqualTo(
-        "Option -f need to have specific values.\n\n" + getHelpMessage());
+    assertThat(writer).hasToString("Option -f need to have specific values.\n\n" + getHelpMessage());
     assertThat(exitException.exitCode).isEqualTo(3);
   }
 
   @Test
   void caseInsensitiveFileFormatIsExtracted() throws Exception {
-    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
-        "-f", "svG"));
+    parameters = Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
+        "-f", "svG");
+
+    app.parseInput(parameters);
     app.convert();
 
     assertThat(format).isEqualTo(FileFormat.SVG);
@@ -185,7 +180,9 @@ class ArgumentParsingTest {
 
   @Test
   void defaultDotPathIsNull() throws Exception {
-    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png"));
+    parameters = Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png");
+
+    app.parseInput(parameters);
     app.convert();
 
     assertThat(dotPath).isNull();
@@ -193,21 +190,21 @@ class ArgumentParsingTest {
 
   @Test
   void dotPathMissingOption() throws Exception {
-    exitException = assertThrows(TestExitException.class, () -> {
-      app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png", "-dotPath"));
-    });
+    parameters = Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png", "-dotPath");
+
+    exitException = assertThrows(TestExitException.class, () -> app.parseInput(parameters));
     app.convert();
 
-    String printedText = writer.toString();
-    assertThat(printedText).isEqualTo(
-        "Missing argument for option: dotPath\n\n" + getHelpMessage());
+    assertThat(writer).hasToString("Missing argument for option: dotPath\n\n" + getHelpMessage());
     assertThat(exitException.exitCode).isEqualTo(100);
   }
 
   @Test
   void dotPathIsExtracted() throws Exception {
-    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
-        "-dotPath", "/some/path"));
+    parameters = Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
+        "-dotPath", "/some/path");
+
+    app.parseInput(parameters);
     app.convert();
 
     assertThat(dotPath).isEqualTo("/some/path");

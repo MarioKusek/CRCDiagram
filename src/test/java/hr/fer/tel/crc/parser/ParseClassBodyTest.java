@@ -11,9 +11,9 @@ class ParseClassBodyTest {
 
   @Test
   void noClassBody() {
-    ParsingException e = assertThrows(ParsingException.class, () -> {
-      new ClassParser("class x").parse();
-    });
+    ClassParser classParser = new ClassParser("class x");
+
+    ParsingException e = assertThrows(ParsingException.class, classParser::parse);
 
     assertThat(e.getMessage()).startsWith("Missing class body");
     assertThat(e.getLine()).isEqualTo(1);
@@ -23,12 +23,14 @@ class ParseClassBodyTest {
   @Test
   void emptyBody() throws Exception {
     Class c = new ClassParser("class x {}").parse();
+
     assertThat(c.getResponsibilities()).isEmpty();
   }
 
   @Test
   void bodyWithNoResponsibility() throws Exception {
     Class c = new ClassParser("class x {}").parse();
+
     assertThat(c.getResponsibilities()).isEmpty();
   }
 

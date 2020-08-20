@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import hr.fer.tel.crc.Class;
 import hr.fer.tel.crc.Diagram;
 
-public class DiagramParserTest {
+class DiagramParserTest {
   String input;
 
   @BeforeEach

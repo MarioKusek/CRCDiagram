@@ -59,34 +59,33 @@ class ParseClassNameTest {
 
   @Test
   void extractClassNameWithNoName_shouldThrowException() throws Exception {
-    ParsingException e = assertThrows(ParsingException.class, () -> {
-      new ClassParser("class {}").parse();
-    });
+    ClassParser classParser = new ClassParser("class {}");
+
+    ParsingException e = assertThrows(ParsingException.class, classParser::parse);
 
     assertThat(e.getMessage()).startsWith("Missing class name");
-    assertThat(e.getLine()).isEqualTo(1);
+    assertThat(e.getLine()).isOne();
     assertThat(e.getColumn()).isEqualTo(6);
   }
 
   @Test
   void extractClassWithNoClassKeyword_shouldThrowException() throws Exception {
-    ParsingException e = assertThrows(ParsingException.class, () -> {
-      new ClassParser("{}").parse();
-    });
+    ClassParser classParser = new ClassParser("{}");
+
+    ParsingException e = assertThrows(ParsingException.class, classParser::parse);
 
     assertThat(e.getMessage()).startsWith("Class should start with class keyword");
-    assertThat(e.getLine()).isEqualTo(1);
-    assertThat(e.getColumn()).isEqualTo(0);
+    assertThat(e.getLine()).isOne();
+    assertThat(e.getColumn()).isZero();
   }
 
   @Test
   void extractClassAndAlias_whenJustAsKeyword_shouldSetAliasToNull() throws Exception {
-    ParsingException e = assertThrows(ParsingException.class, () -> {
-      new ClassParser("class x as {}").parse();
-    });
+    ClassParser classParser = new ClassParser("class x as {}");
+    ParsingException e = assertThrows(ParsingException.class, classParser::parse);
 
     assertThat(e.getMessage()).startsWith("Missing alias");
-    assertThat(e.getLine()).isEqualTo(1);
+    assertThat(e.getLine()).isOne();
     assertThat(e.getColumn()).isEqualTo(11);
   }
 }

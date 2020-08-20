@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import hr.fer.tel.approval.ImageDiffWebReporter;
 
 @UseReporter({ImageDiffWebReporter.class})
-public class ImageGeneratorTest {
+class ImageGeneratorTest {
 
   @Test
   void imageGeneration() throws Exception {

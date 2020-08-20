@@ -12,4 +12,8 @@ import lombok.Setter;
 public class Responsibility {
   private final String text;
   private String collaborator;
+
+  public boolean hasCollaborator() {
+    return collaborator != null;
+  }
 }
