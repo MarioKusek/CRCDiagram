@@ -3,6 +3,8 @@ package hr.fer.tel.crc;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Diagram {
 
@@ -47,4 +49,13 @@ public class Diagram {
   public List<Class> getClasses() {
     return classes;
   }
+
+  public Set<Class> getCollaboratorsForClass(Class clazz) {
+    return clazz.getResponsibilities().stream()
+        .map(r -> r.getCollaborator())
+        .filter(c -> c != null)
+        .map(c -> getClassByKey(c))
+        .collect(Collectors.toSet());
+  }
+
 }
