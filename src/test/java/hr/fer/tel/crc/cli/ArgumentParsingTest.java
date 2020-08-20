@@ -23,6 +23,7 @@ class ArgumentParsingTest {
   private boolean convertCalled = false;
 
   private int exitCode = 0;
+  private TestExitException exitException;
   private StringWriter writer;
 
   class Converter implements CrcDiagramConverter {
@@ -37,6 +38,14 @@ class ArgumentParsingTest {
     }
   }
 
+  class TestExitException extends RuntimeException {
+    int exitCode = 0;
+
+    public TestExitException(int exitCode) {
+      this.exitCode = exitCode;
+    }
+  }
+
   @BeforeEach
   void setup() {
     converter = new Converter();
@@ -46,6 +55,7 @@ class ArgumentParsingTest {
       @Override
       void exitApp(int code) {
         exitCode = code;
+        exitException = new TestExitException(code);
       }
     };
   }
@@ -55,7 +65,7 @@ class ArgumentParsingTest {
     app.parseInput(Arrays.array("-h"));
 
     assertThat(writer.toString()).isEqualTo(getHelpMessage());
-    assertThat(exitCode).isEqualTo(0);
+    assertThat(exitException).isNull();
   }
 
   private String getHelpMessage() {
@@ -71,7 +81,7 @@ class ArgumentParsingTest {
 
     String printedText = writer.toString();
     assertThat(printedText).isEqualTo("-i is required option\n\n" + getHelpMessage());
-    assertThat(exitCode).isEqualTo(1);
+    assertThat(exitException.exitCode).isEqualTo(1);
   }
 
   @Test
