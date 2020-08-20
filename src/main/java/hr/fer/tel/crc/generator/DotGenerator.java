@@ -63,11 +63,6 @@ public class DotGenerator {
     print("}}\"];\n");
   }
 
-  /*
-   * \ --> \\ - generating
-   * \n --> \l - parsing, generating and counting
-   * " --> \" - generating
-   */
   private String escapingString(String string) {
     String escapedString = string.replace("\\", "\\\\");
     escapedString = escapedString.replace("\n", "\\l");
