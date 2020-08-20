@@ -55,7 +55,7 @@ class ArgumentParsingTest {
       @Override
       void exitApp(int code) {
         exitException = new TestExitException(code);
-        if(code <= 2)
+        if(code <= 3)
           throw exitException;
       }
     };
@@ -162,8 +162,10 @@ class ArgumentParsingTest {
 
   @Test
   void fileFormatWrongOption() throws Exception {
-    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
-        "-f", "wrong"));
+    exitException = assertThrows(TestExitException.class, () -> {
+      app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png",
+          "-f", "wrong"));
+    });
     app.convert();
 
     String printedText = writer.toString();
