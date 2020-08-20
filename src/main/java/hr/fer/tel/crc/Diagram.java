@@ -15,7 +15,7 @@ public class Diagram {
     aliasses = new HashMap<>();
     classes.stream().forEach(c -> {
       if(aliasses.containsKey(c.getName()))
-        throw new RuntimeException("Class with name " + c.getName() + " is already in diagram.");
+        throw new ClassAlreadyInDiagramException(c.getName());
       aliasses.put(c.getName(), c);
 
       if(aliasses.containsKey(c.getAlias()))
