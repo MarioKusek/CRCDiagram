@@ -29,15 +29,15 @@ public class Diagram {
 
   private void checkCollaborators() {
     classes.stream()
-      .forEach(c -> {
-        c.getResponsibilities().stream().forEach(r -> {
-          String collaborator = r.getCollaborator();
-          if(collaborator != null && getClassByKey(collaborator) == null)
-            throw new CollaboratorNotFoundException(c.getName(), collaborator);
-          else if(collaborator != null && getClassByKey(collaborator) == c)
-            throw new SameClassCollaboratorException(c.getName());
-        });
-      });
+      .forEach(clazz ->
+        clazz.getResponsibilities().stream().forEach(responsibility -> {
+          final String collaboratorName = responsibility.getCollaborator();
+          if(collaboratorName != null && getClassByKey(collaboratorName) == null)
+            throw new CollaboratorNotFoundException(clazz.getName(), collaboratorName);
+          else if(collaboratorName != null && getClassByKey(collaboratorName) == clazz)
+            throw new SameClassCollaboratorException(clazz.getName());
+        })
+      );
   }
 
   public Class getClassByKey(String key) {
