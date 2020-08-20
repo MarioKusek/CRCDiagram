@@ -21,16 +21,16 @@ public class ClassParser {
   }
 
   public Class parse() {
-    StringRange bodyRange = findBodyRange();
-    StringRange classDeclarationRange = new StringRange(textRange.getStart(), bodyRange.getStart() - 1);
+    final StringRange bodyRange = findBodyRange();
+    final StringRange classDeclarationRange = new StringRange(textRange.getStart(), bodyRange.getStart() - 1);
 
-    StringRange nameRange = extractClassName(classDeclarationRange);
-    Class crcClass = new Class(unescapeClassName(nameRange.apply(text)));
+    final StringRange nameRange = extractClassName(classDeclarationRange);
+    final Class crcClass = new Class(unescapeClassName(nameRange.apply(text)));
 
-    StringRange aliasRange = extractAlias(new StringRange(nameRange.getEnd() + 1, classDeclarationRange.getEnd()));
+    final StringRange aliasRange = extractAlias(new StringRange(nameRange.getEnd() + 1, classDeclarationRange.getEnd()));
     crcClass.setAlias(aliasRange.apply(text));
 
-    extractBody(bodyRange).stream().forEach(r -> crcClass.add(r));
+    extractBody(bodyRange).stream().forEach(crcClass::add);
 
     return crcClass;
   }
@@ -44,7 +44,7 @@ public class ClassParser {
   }
 
   private List<Responsibility> extractBody(StringRange bodyRange) {
-    StringRange bodyContentRange = new StringRange(bodyRange.getStart()+1, bodyRange.getEnd()-1);
+    final StringRange bodyContentRange = new StringRange(bodyRange.getStart()+1, bodyRange.getEnd()-1);
     if(bodyContentRange.isEmptyRange())
       return List.of();
 
@@ -55,13 +55,13 @@ public class ClassParser {
   }
 
   private Responsibility extractResponsibility(String line) {
-    int collaboratorDividerIndex = findCollaboratorDividerIndex(line);
+    final int collaboratorDividerIndex = findCollaboratorDividerIndex(line);
     Responsibility responsibility;
-    if(collaboratorDividerIndex != -1) {
+    if(collaboratorDividerIndex == -1) {
+      responsibility = new Responsibility(line);
+    } else {
       responsibility = new Responsibility(unescapeResponsibility(line.substring(0, collaboratorDividerIndex).trim()));
       responsibility.setCollaborator(line.substring(collaboratorDividerIndex+1).trim());
-    } else {
-      responsibility = new Responsibility(line);
     }
     return responsibility;
   }
@@ -82,7 +82,7 @@ public class ClassParser {
   }
 
   private StringRange findBodyRange() {
-    int openCurlyBraceIndex = text.indexOf('{', textRange.getStart());
+    final int openCurlyBraceIndex = text.indexOf('{', textRange.getStart());
     if(openCurlyBraceIndex == -1)
       throw new ParsingException("Missing class body", text, textRange.getEnd()+1);
 
@@ -90,11 +90,11 @@ public class ClassParser {
   }
 
   private StringRange extractAlias(StringRange range) {
-    int asIndex = text.indexOf("as ", range.getStart());
+    final int asIndex = text.indexOf("as ", range.getStart());
     if(asIndex == -1)
       return new StringRange(-1, -1);
 
-    StringRange aliasRange = new StringRange(asIndex + 3, text.indexOf(' ', asIndex + 3)-1);
+    final StringRange aliasRange = new StringRange(asIndex + 3, text.indexOf(' ', asIndex + 3)-1);
     if(aliasRange.isEmptyRange())
       throw new ParsingException("Missing alias", text, aliasRange.getStart());
 
@@ -106,11 +106,11 @@ public class ClassParser {
       throw new ParsingException("Class should start with class keyword", text, range.getStart());
 
     if(text.charAt(range.getStart() + 6) == '"') {
-      int classNameEndIndex = findEndOfClassName(range.getStart() + 7);
+      final int classNameEndIndex = findEndOfClassName(range.getStart() + 7);
       return new StringRange(range.getStart() + 7, classNameEndIndex-1);
     }
 
-    StringRange nameRange = new StringRange(range.getStart() + 6, text.indexOf(' ', range.getStart() + 6)-1);
+    final StringRange nameRange = new StringRange(range.getStart() + 6, text.indexOf(' ', range.getStart() + 6)-1);
     if(nameRange.isEmptyRange())
       throw new ParsingException("Missing class name", text, range.getStart() + 6);
     return nameRange;

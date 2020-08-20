@@ -5,7 +5,7 @@ import java.io.Writer;
 
 public class IndentWriter {
 
-  private Writer writer;
+  private final Writer writer;
   private int indent;
 
   public IndentWriter(Writer writer) {

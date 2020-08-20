@@ -8,8 +8,8 @@ import hr.fer.tel.crc.Diagram;
 
 public class DiagramParser {
 
-  private String text;
-  private List<Class> classes;
+  private final String text;
+  private final List<Class> classes;
 
   public DiagramParser(String text) {
     this.text = text;

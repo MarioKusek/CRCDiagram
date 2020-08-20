@@ -40,7 +40,7 @@ public class DotGenerator {
 
   private void printClasses() throws IOException {
     int i = 0;
-    for (Class cl: diagram.getClasses()) {
+    for (final Class cl: diagram.getClasses()) {
       classMapNameToIndex.put(cl.getName(), i);
       classMapNameToIndex.put(cl.getAlias(), i);
       printClass(cl, i);
@@ -89,7 +89,7 @@ public class DotGenerator {
     else
       collaboratorString = escapingString(r.getCollaborator());
 
-    String linesString = "\\l".repeat((int)(r.getText().lines().count()) - 1);
+    final String linesString = "\\l".repeat((int)(r.getText().lines().count()) - 1);
 
     return collaboratorString + linesString;
   }
@@ -103,13 +103,13 @@ public class DotGenerator {
   private void printConnections() throws IOException {
     writer.print("\n");
 
-    Set<Pair> printedConnections = new HashSet<>();
+    final Set<Pair> printedConnections = new HashSet<>();
 
-    for(Class cl: diagram.getClasses()) {
-      for(Responsibility r: cl.getResponsibilities()) {
-        String collaborator = r.getCollaborator();
+    for(final Class cl: diagram.getClasses()) {
+      for(final Responsibility r: cl.getResponsibilities()) {
+        final String collaborator = r.getCollaborator();
         if(collaborator != null) {
-          Class second = diagram.getClassByKey(collaborator);
+          final Class second = diagram.getClassByKey(collaborator);
           if(!isPrintedConnection(printedConnections, cl, second)) {
             if(diagram.isBidirectionalConnection(cl, second)) {
               printBidirectionalConnection(printedConnections, cl, second);

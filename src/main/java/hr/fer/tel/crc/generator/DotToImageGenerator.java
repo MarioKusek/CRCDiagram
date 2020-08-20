@@ -17,26 +17,24 @@ public class DotToImageGenerator {
       throws IOException, InterruptedException {
     ProcessBuilder builder;
 
-    String shell = System.getenv("SHELL");
+    final String shell = System.getenv("SHELL");
     builder = new ProcessBuilder(shell, "-c", "dot -o" + outputFile + " -T " + fileFormat.getFormatText());
 
     if(pathToDot != null) {
-      Map<String, String> env = builder.environment();
-      env.compute("PATH", (k, v) -> {
-        return v + File.pathSeparator + pathToDot;
-      });
+      final Map<String, String> env = builder.environment();
+      env.compute("PATH", (k, v) -> v + File.pathSeparator + pathToDot);
     }
 
     builder.redirectErrorStream(true);
-    Process dotProcess = builder.start();
+    final Process dotProcess = builder.start();
 
     if(dotProcess.isAlive()) {
-      OutputStream dotOutputStream = dotProcess.getOutputStream();
+      final OutputStream dotOutputStream = dotProcess.getOutputStream();
       dotOutputStream.write(graph.getBytes(StandardCharsets.UTF_8));
       dotOutputStream.close();
     }
 
-    BufferedReader reader = new BufferedReader(new InputStreamReader(dotProcess.getInputStream()));
+    final BufferedReader reader = new BufferedReader(new InputStreamReader(dotProcess.getInputStream()));
     String line = reader.readLine();
     while (line != null) {
       System.out.println("Running Graphviz dot command: " + line);

@@ -63,7 +63,7 @@ class ArgumentParsingTest {
   void help() throws Exception {
     app.parseInput(Arrays.array("-h"));
 
-    assertThat(writer.toString()).isEqualTo(getHelpMessage());
+    assertThat(writer).hasToString(getHelpMessage());
   }
 
   private String getHelpMessage() {

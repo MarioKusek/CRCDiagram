@@ -24,7 +24,8 @@ class DiagramTest {
     Class cl1 = new Class("cl1");
     Class cl2 = new Class("cl1");
     assertThrows(RuntimeException.class, () -> {
-      new Diagram(List.of(cl1, cl2));
+      List<Class> classList = List.of(cl1, cl2);
+      new Diagram(classList);
     });
   }
 
@@ -32,18 +33,14 @@ class DiagramTest {
   void twoClassesWithSameAlias() throws Exception {
     Class cl1 = Class.builder().name("cl1").alias("a").build();
     Class cl2 = Class.builder().name("cl2").alias("a").build();
-    assertThrows(RuntimeException.class, () -> {
-      new Diagram(List.of(cl1, cl2));
-    });
+    assertThrows(RuntimeException.class, () -> new Diagram(List.of(cl1, cl2)));
   }
 
   @Test
   void twoClassesWithConflictingNameAndAlias() throws Exception {
     Class cl1 = Class.builder().name("cl1").alias("a").build();
     Class cl2 = Class.builder().name("a").build();
-    assertThrows(RuntimeException.class, () -> {
-      new Diagram(List.of(cl1, cl2));
-    });
+    assertThrows(RuntimeException.class, () -> new Diagram(List.of(cl1, cl2)));
   }
 
   @Test
@@ -54,9 +51,7 @@ class DiagramTest {
         .responsibility(new Responsibility("r1", "cl3"))
         .build();
     Class cl2 = Class.builder().name("cl2").build();
-    RuntimeException e = assertThrows(RuntimeException.class, () -> {
-      new Diagram(List.of(cl1, cl2));
-    });
+    RuntimeException e = assertThrows(RuntimeException.class, () -> new Diagram(List.of(cl1, cl2)));
 
     assertThat(e.getMessage()).isEqualTo("Class with name cl1 has collaborator cl3 that can not be found.");
   }
@@ -84,9 +79,7 @@ class DiagramTest {
         .responsibility(new Responsibility("r1", "cl1"))
         .build();
 
-    RuntimeException e = assertThrows(RuntimeException.class, () -> {
-      new Diagram(List.of(cl1));
-    });
+    RuntimeException e = assertThrows(RuntimeException.class, () -> new Diagram(List.of(cl1)));
   }
 
   @Test
@@ -97,9 +90,7 @@ class DiagramTest {
         .responsibility(new Responsibility("r1", "a1"))
         .build();
 
-    RuntimeException e = assertThrows(RuntimeException.class, () -> {
-      new Diagram(List.of(cl1));
-    });
+    RuntimeException e = assertThrows(RuntimeException.class, () -> new Diagram(List.of(cl1)));
   }
 
 }

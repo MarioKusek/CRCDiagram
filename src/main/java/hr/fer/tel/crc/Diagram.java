@@ -3,6 +3,7 @@ package hr.fer.tel.crc;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,15 +53,15 @@ public class Diagram {
 
   public Set<Class> getCollaboratorsForClass(Class clazz) {
     return clazz.getResponsibilities().stream()
-        .map(r -> r.getCollaborator())
-        .filter(c -> c != null)
-        .map(c -> getClassByKey(c))
+        .map(Responsibility::getCollaborator)
+        .filter(Objects::nonNull)
+        .map(this::getClassByKey)
         .collect(Collectors.toSet());
   }
 
   public boolean isBidirectionalConnection(Class first, Class second) {
-    Set<Class> firstCollaborators = getCollaboratorsForClass(first);
-    Set<Class> secondCollaborators = getCollaboratorsForClass(second);
+    final Set<Class> firstCollaborators = getCollaboratorsForClass(first);
+    final Set<Class> secondCollaborators = getCollaboratorsForClass(second);
     return firstCollaborators.contains(second) && secondCollaborators.contains(first);
   }
 
