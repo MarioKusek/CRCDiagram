@@ -16,8 +16,8 @@ import hr.fer.tel.crc.generator.FileFormat;
 
 public class CrcDiagramApplication {
 
-  private CrcDiagramConverter converter;
-  private PrintWriter writer;
+  private final CrcDiagramConverter converter;
+  private final PrintWriter writer;
   private Options options;
 
   // parsed values
@@ -65,7 +65,7 @@ public class CrcDiagramApplication {
 
   }
 
-  public void parseInput(String[] args) throws ParseException, IOException, InterruptedException {
+  public void parseInput(String... args) throws ParseException, IOException, InterruptedException {
 
     try {
       CommandLineParser parser = new DefaultParser();
@@ -74,46 +74,50 @@ public class CrcDiagramApplication {
       if (line.hasOption("h")) {
         printHelp();
       } else {
-        if (!line.hasOption("i")) {
-          writer.println("-i is required option\n");
-          printHelp();
-          exitApp(1);
-          return;
-        } else {
-            inputFile = line.getOptionValue("i");
-        }
-
-        if (!line.hasOption("o")) {
-          writer.println("-o is required option\n");
-          printHelp();
-          exitApp(2);
-          return;
-        } else {
-          outputFile = line.getOptionValue("o");
-        }
-
-        format = FileFormat.PNG; // default file format
-
-        if (line.hasOption("f")) {
-          try {
-            format = FileFormat.valueOf(line.getOptionValue("f").toUpperCase());
-          } catch (IllegalArgumentException e) {
-            writer.println("Option -f need to have specific values.\n");
-            printHelp();
-            exitApp(3);
-            return;
-          }
-        }
-
-        if (line.hasOption("dotPath")) {
-          dotPath = line.getOptionValue("dotPath");
-        }
+        fillInArguments(line);
       }
     } catch (MissingArgumentException e) {
       writer.println(e.getMessage());
       writer.println();
       printHelp();
       exitApp(100);
+    }
+  }
+
+  private void fillInArguments(CommandLine line) {
+    if (!line.hasOption("i")) {
+      writer.println("-i is required option\n");
+      printHelp();
+      exitApp(1);
+      return;
+    } else {
+        inputFile = line.getOptionValue("i");
+    }
+
+    if (!line.hasOption("o")) {
+      writer.println("-o is required option\n");
+      printHelp();
+      exitApp(2);
+      return;
+    } else {
+      outputFile = line.getOptionValue("o");
+    }
+
+    format = FileFormat.PNG; // default file format
+
+    if (line.hasOption("f")) {
+      try {
+        format = FileFormat.valueOf(line.getOptionValue("f").toUpperCase());
+      } catch (IllegalArgumentException e) {
+        writer.println("Option -f need to have specific values.\n");
+        printHelp();
+        exitApp(3);
+        return;
+      }
+    }
+
+    if (line.hasOption("dotPath")) {
+      dotPath = line.getOptionValue("dotPath");
     }
   }
 
