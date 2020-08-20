@@ -1,6 +1,7 @@
 package hr.fer.tel.crc.cli;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -54,6 +55,8 @@ class ArgumentParsingTest {
       @Override
       void exitApp(int code) {
         exitException = new TestExitException(code);
+        if(code == 1)
+          throw exitException;
       }
     };
   }
@@ -75,7 +78,9 @@ class ArgumentParsingTest {
 
   @Test
   void inputFileOptionMissing() throws Exception {
-    app.parseInput(Arrays.array());
+    exitException = assertThrows(TestExitException.class,  () -> {
+      app.parseInput(Arrays.array());
+    });
 
     String printedText = writer.toString();
     assertThat(printedText).isEqualTo("-i is required option\n\n" + getHelpMessage());
