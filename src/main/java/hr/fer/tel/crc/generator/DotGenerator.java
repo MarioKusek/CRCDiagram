@@ -37,9 +37,9 @@ public class DotGenerator {
   }
 
   private void printPrefix() throws IOException {
-    println("digraph structs {");
-    increseIndent();
-    println("node [shape=record];");
+    writer.println("digraph structs {");
+    writer.increseIndent();
+    writer.println("node [shape=record];");
   }
 
   private void printClasses() throws IOException {
@@ -53,16 +53,16 @@ public class DotGenerator {
   }
 
   private void printClass(Class cl, Integer index) throws IOException {
-    printIndent();
-    print("cl");
-    print(index.toString());
-    print(" [label=\"{");
-    print(escapingString(cl.getName()));
-    print(" | {");
+    writer.printIndent();
+    writer.print("cl");
+    writer.print(index.toString());
+    writer.print(" [label=\"{");
+    writer.print(escapingString(cl.getName()));
+    writer.print(" | {");
     printResponsibilities(cl);
-    print(" | ");
+    writer.print(" | ");
     printCollaborators(cl);
-    print("}}\"];\n");
+    writer.print("}}\"];\n");
   }
 
   private String escapingString(String string) {
@@ -74,15 +74,15 @@ public class DotGenerator {
   }
 
   private void printResponsibilities(Class cl) throws IOException {
-    print(cl.getResponsibilities().stream()
-        .map(r -> "- " + escapingString(r.getText()))
-        .collect(Collectors.joining("\\l")));
+    writer.print(cl.getResponsibilities().stream()
+    .map(r -> "- " + escapingString(r.getText()))
+    .collect(Collectors.joining("\\l")));
   }
 
   private void printCollaborators(Class cl) throws IOException {
-    print(cl.getResponsibilities().stream()
-        .map(this::createCollaboratorString)
-        .collect(Collectors.joining("\\l")));
+    writer.print(cl.getResponsibilities().stream()
+    .map(this::createCollaboratorString)
+    .collect(Collectors.joining("\\l")));
   }
 
   private String createCollaboratorString(Responsibility r) {
@@ -105,7 +105,7 @@ public class DotGenerator {
   }
 
   private void printConnections() throws IOException {
-    print("\n");
+    writer.print("\n");
 
     Set<Pair> printedConnections = new HashSet<>();
 
@@ -127,12 +127,12 @@ public class DotGenerator {
   }
 
   private void printOneWayConnection(Set<Pair> printedConnections, Class classFrom, Class classTo) throws IOException {
-    printIndent();
-    print("cl");
-    print(classMapNameToIndex.get(classFrom.getName()).toString());
-    print(" -> cl");
-    print(classMapNameToIndex.get(classTo.getName()).toString());
-    println();
+    writer.printIndent();
+    writer.print("cl");
+    writer.print(classMapNameToIndex.get(classFrom.getName()).toString());
+    writer.print(" -> cl");
+    writer.print(classMapNameToIndex.get(classTo.getName()).toString());
+    writer.println();
     printedConnections.add(new Pair(classFrom, classTo));
   }
 
@@ -140,13 +140,13 @@ public class DotGenerator {
       throws IOException {
     printedConnections.add(new Pair(firstClass, secondClass));
     printedConnections.add(new Pair(secondClass, firstClass));
-    printIndent();
-    print("cl");
-    print(classMapNameToIndex.get(firstClass.getName()).toString());
-    print(" -> cl");
-    print(classMapNameToIndex.get(secondClass.getName()).toString());
-    print(" [dir=both]");
-    println();
+    writer.printIndent();
+    writer.print("cl");
+    writer.print(classMapNameToIndex.get(firstClass.getName()).toString());
+    writer.print(" -> cl");
+    writer.print(classMapNameToIndex.get(secondClass.getName()).toString());
+    writer.print(" [dir=both]");
+    writer.println();
   }
 
   private boolean isBidirectionalConnection(Class first, Class second) {
@@ -167,33 +167,8 @@ public class DotGenerator {
     return printedConnections.contains(new Pair(cl, second));
   }
 
-  private void decreseIndent() {
-    writer.decreseIndent();
-  }
-
   private void printSuffix() throws IOException {
-    decreseIndent();
-    println("}");
-  }
-
-  private void increseIndent() {
-    writer.increseIndent();
-  }
-
-  private void println() throws IOException {
-    writer.println();
-  }
-
-  private void println(String string) throws IOException {
-    writer.println(string);
-
-  }
-
-  private void print(String string) throws IOException {
-    writer.print(string);
-  }
-
-  private void printIndent() throws IOException {
-      writer.printIndent();
+    writer.decreseIndent();
+    writer.println("}");
   }
 }
