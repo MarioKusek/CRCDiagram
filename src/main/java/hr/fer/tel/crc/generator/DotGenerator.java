@@ -16,15 +16,12 @@ import lombok.Data;
 public class DotGenerator {
 
   private Diagram diagram;
-// REMOVE private Writer writer;
   private IndentWriter writer;
 
-  private int indent;
   private Map<String, Integer> classMapNameToIndex = new HashMap<>();
 
   public DotGenerator(Diagram diagram, Writer writer) {
     this.diagram = diagram;
-// REMOVE   this.writer = writer;
     this.writer = new IndentWriter(writer);
   }
 
@@ -32,7 +29,6 @@ public class DotGenerator {
     printPrefix();
     printClasses();
     printConnections();
-
     printSuffix();
   }
 
