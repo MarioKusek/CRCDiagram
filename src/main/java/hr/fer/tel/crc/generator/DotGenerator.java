@@ -2,6 +2,8 @@ package hr.fer.tel.crc.generator;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,10 +21,12 @@ public class DotGenerator {
   private IndentWriter writer;
 
   private Map<String, Integer> classMapNameToIndex = new HashMap<>();
+  private Set<ClassConnection> printedConnections;
 
   public DotGenerator(Diagram diagram, Writer writer) {
     this.diagram = diagram;
     this.writer = new IndentWriter(writer);
+    this.printedConnections = new HashSet<>();
   }
 
   public void printDiagram() throws IOException {
@@ -95,58 +99,74 @@ public class DotGenerator {
   }
 
   @Data
-  private static class Pair {
-    private final Class first;
-    private final Class second;
-  }
+  private static class ClassConnection {
+    private final Class primaryClass;
+    private final Class collaboratorClass;
 
-  private void printConnections() throws IOException {
-    writer.print("\n");
-
-    final Set<Pair> printedConnections = new HashSet<>();
-
-    for(final Class cl: diagram.getClasses()) {
-      for(final Responsibility r: cl.getResponsibilities()) {
-        final String collaborator = r.getCollaborator();
-        if(collaborator != null) {
-          final Class second = diagram.getClassByKey(collaborator);
-          if(!isPrintedConnection(printedConnections, cl, second)) {
-            if(diagram.isBidirectionalConnection(cl, second)) {
-              printBidirectionalConnection(printedConnections, cl, second);
-            } else {
-              printOneWayConnection(printedConnections, cl, second);
-            }
-          }
-        }
-      }
+    public ClassConnection reverse() {
+      return new ClassConnection(collaboratorClass, primaryClass);
     }
   }
 
-  private void printOneWayConnection(Set<Pair> printedConnections, Class classFrom, Class classTo) throws IOException {
-    writer.printIndent();
-    writer.print("cl");
-    writer.print(classMapNameToIndex.get(classFrom.getName()).toString());
-    writer.print(" -> cl");
-    writer.print(classMapNameToIndex.get(classTo.getName()).toString());
-    writer.println();
-    printedConnections.add(new Pair(classFrom, classTo));
+  private void printConnections() throws IOException {
+    printedConnections.clear();
+    writer.print("\n");
+
+    for(final ClassConnection connection: getAllConnections())
+      if(connectionNotPrinted(connection)) {
+        printConnection(connection);
+      }
   }
 
-  private void printBidirectionalConnection(Set<Pair> printedConnections, Class firstClass, Class secondClass)
+  private Collection<ClassConnection> getAllConnections() {
+    final Collection<ClassConnection> connections = new ArrayList<>();
+
+    for(final Class cl: diagram.getClasses()) {
+      for(final Responsibility r: cl.getResponsibilities()) {
+        if(r.hasCollaborator()) {
+          final String collaboratorName = r.getCollaborator();
+          final Class collaboratorClass = diagram.getClassByKey(collaboratorName);
+          connections.add(new ClassConnection(cl, collaboratorClass));
+        }
+      }
+    }
+    return connections;
+  }
+
+  private void printConnection(final ClassConnection connection)
       throws IOException {
-    printedConnections.add(new Pair(firstClass, secondClass));
-    printedConnections.add(new Pair(secondClass, firstClass));
+    if(diagram.isBidirectionalConnection(connection.getPrimaryClass(), connection.getCollaboratorClass())) {
+      printBidirectionalConnection(connection);
+    } else {
+      printOneWayConnection(connection);
+    }
+  }
+
+  private void printOneWayConnection(ClassConnection connection) throws IOException {
     writer.printIndent();
     writer.print("cl");
-    writer.print(classMapNameToIndex.get(firstClass.getName()).toString());
+    writer.print(classMapNameToIndex.get(connection.getPrimaryClass().getName()).toString());
     writer.print(" -> cl");
-    writer.print(classMapNameToIndex.get(secondClass.getName()).toString());
+    writer.print(classMapNameToIndex.get(connection.getCollaboratorClass().getName()).toString());
+    writer.println();
+    printedConnections.add(connection);
+  }
+
+  private void printBidirectionalConnection(ClassConnection connection)
+      throws IOException {
+    printedConnections.add(connection);
+    printedConnections.add(connection.reverse());
+    writer.printIndent();
+    writer.print("cl");
+    writer.print(classMapNameToIndex.get(connection.getPrimaryClass().getName()).toString());
+    writer.print(" -> cl");
+    writer.print(classMapNameToIndex.get(connection.getCollaboratorClass().getName()).toString());
     writer.print(" [dir=both]");
     writer.println();
   }
 
-  private boolean isPrintedConnection(Set<Pair> printedConnections, Class cl, Class second) {
-    return printedConnections.contains(new Pair(cl, second));
+  private boolean connectionNotPrinted(ClassConnection connection) {
+    return !printedConnections.contains(connection);
   }
 
   private void printSuffix() throws IOException {
