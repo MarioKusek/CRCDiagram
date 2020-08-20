@@ -16,16 +16,16 @@ import lombok.Data;
 public class DotGenerator {
 
   private Diagram diagram;
-  private Writer writer;
-  private IndentWriter indentWriter;
+// REMOVE private Writer writer;
+  private IndentWriter writer;
 
   private int indent;
   private Map<String, Integer> classMapNameToIndex = new HashMap<>();
 
   public DotGenerator(Diagram diagram, Writer writer) {
     this.diagram = diagram;
-    this.writer = writer;
-    this.indentWriter = new IndentWriter(writer);
+// REMOVE   this.writer = writer;
+    this.writer = new IndentWriter(writer);
   }
 
   public void writeDiagram() throws IOException {
@@ -168,7 +168,7 @@ public class DotGenerator {
   }
 
   private void decreseIndent() {
-    indent--;
+    writer.decreseIndent();
   }
 
   private void printSuffix() throws IOException {
@@ -177,26 +177,23 @@ public class DotGenerator {
   }
 
   private void increseIndent() {
-    indent++;
+    writer.increseIndent();
   }
 
   private void println() throws IOException {
-    writer.append("\n");
+    writer.println();
   }
 
   private void println(String string) throws IOException {
-    printIndent();
-    print(string);
-    writer.append("\n");
+    writer.println(string);
 
   }
 
   private void print(String string) throws IOException {
-    writer.append(string);
+    writer.print(string);
   }
 
   private void printIndent() throws IOException {
-    for(int i=0; i < indent * 2; i++)
-      writer.append(" ");
+      writer.printIndent();
   }
 }
