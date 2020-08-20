@@ -19,7 +19,7 @@ public class Diagram {
       aliasses.put(c.getName(), c);
 
       if(aliasses.containsKey(c.getAlias()))
-        throw new RuntimeException("Class with alias " + c.getName() + " is already in diagram.");
+        throw ClassAlreadyInDiagramException.withAlias(c.getName());
       if(c.getAlias() != null)
         aliasses.put(c.getAlias(), c);
     });
