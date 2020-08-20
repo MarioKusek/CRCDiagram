@@ -55,7 +55,7 @@ class ArgumentParsingTest {
       @Override
       void exitApp(int code) {
         exitException = new TestExitException(code);
-        if(code == 1)
+        if(code <= 2)
           throw exitException;
       }
     };
@@ -100,16 +100,20 @@ class ArgumentParsingTest {
 
   @Test
   void inputFileExtractedButOutputIsMissing() throws Exception {
-    app.parseInput(Arrays.array("-i", "someInputFile.crc"));
+    exitException = assertThrows(TestExitException.class, () -> {
+      app.parseInput(Arrays.array("-i", "someInputFile.crc"));
+    });
     app.convert();
 
     assertThat(inputFile).isEqualTo("someInputFile.crc");
-    assertThat(exitException.exitCode).isNotEqualTo(0);
+    assertThat(exitException).isNotNull();
   }
 
   @Test
   void outputFileOptionMissing() throws Exception {
-    app.parseInput(Arrays.array("-i", "someFile"));
+    exitException = assertThrows(TestExitException.class, () -> {
+      app.parseInput(Arrays.array("-i", "someFile"));
+    });
 
     String printedText = writer.toString();
     assertThat(printedText).isEqualTo("-o is required option\n\n" + getHelpMessage());
