@@ -14,6 +14,7 @@ import lombok.Singular;
 @Getter
 @Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@SuppressWarnings("PMD.BeanMembersShouldSerialize")
 public class Class {
 
   private final String name;
