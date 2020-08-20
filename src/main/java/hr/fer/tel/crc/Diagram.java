@@ -15,7 +15,7 @@ public class Diagram {
     aliasses = new HashMap<>();
     classes.stream().forEach(c -> {
       if(aliasses.containsKey(c.getName()))
-        throw new ClassAlreadyInDiagramException(c.getName());
+        throw ClassAlreadyInDiagramException.withName(c.getName());
       aliasses.put(c.getName(), c);
 
       if(aliasses.containsKey(c.getAlias()))
