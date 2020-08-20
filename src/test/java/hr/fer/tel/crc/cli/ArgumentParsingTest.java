@@ -54,9 +54,7 @@ class ArgumentParsingTest {
 
       @Override
       void exitApp(int code) {
-        exitException = new TestExitException(code);
-        if(code <= 3)
-          throw exitException;
+        throw new TestExitException(code);
       }
     };
   }
@@ -89,7 +87,9 @@ class ArgumentParsingTest {
 
   @Test
   void inputFileMissing() throws Exception {
-    app.parseInput(Arrays.array("-i"));
+    exitException = assertThrows(TestExitException.class, () -> {
+      app.parseInput(Arrays.array("-i"));
+    });
     app.convert();
 
     String printedText = writer.toString();
@@ -122,7 +122,9 @@ class ArgumentParsingTest {
 
   @Test
   void outputFileMissing() throws Exception {
-    app.parseInput(Arrays.array("-i", "someInput", "-o"));
+    exitException = assertThrows(TestExitException.class, () -> {
+      app.parseInput(Arrays.array("-i", "someInput", "-o"));
+    });
     app.convert();
 
     String printedText = writer.toString();
@@ -151,7 +153,9 @@ class ArgumentParsingTest {
 
   @Test
   void fileFormatMissingOption() throws Exception {
-    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png", "-f"));
+    exitException = assertThrows(TestExitException.class, () -> {
+      app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png", "-f"));
+    });
     app.convert();
 
     String printedText = writer.toString();
@@ -195,7 +199,9 @@ class ArgumentParsingTest {
 
   @Test
   void dotPathMissingOption() throws Exception {
-    app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png", "-dotPath"));
+    exitException = assertThrows(TestExitException.class, () -> {
+      app.parseInput(Arrays.array("-i", "someInputFile.crc", "-o", "someOutputFile.png", "-dotPath"));
+    });
     app.convert();
 
     String printedText = writer.toString();
