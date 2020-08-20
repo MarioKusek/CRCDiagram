@@ -17,6 +17,7 @@ public class DotGenerator {
 
   private Diagram diagram;
   private Writer writer;
+  private IndentWriter indentWriter;
 
   private int indent;
   private Map<String, Integer> classMapNameToIndex = new HashMap<>();
@@ -24,6 +25,7 @@ public class DotGenerator {
   public DotGenerator(Diagram diagram, Writer writer) {
     this.diagram = diagram;
     this.writer = writer;
+    this.indentWriter = new IndentWriter(writer);
   }
 
   public void writeDiagram() throws IOException {
@@ -114,23 +116,9 @@ public class DotGenerator {
           Class second = diagram.getClassByKey(collaborator);
           if(!isPrintedConnection(printedConnections, cl, second)) {
             if(isBidirectionalConnection(cl, second)) {
-              printedConnections.add(new Pair(cl, second));
-              printedConnections.add(new Pair(second, cl));
-              printIndent();
-              print("cl");
-              print(classMapNameToIndex.get(cl.getName()).toString());
-              print(" -> cl");
-              print(classMapNameToIndex.get(second.getName()).toString());
-              print(" [dir=both]");
-              println();
+              printBidirectionalConnection(printedConnections, cl, second);
             } else {
-              printIndent();
-              print("cl");
-              print(classMapNameToIndex.get(cl.getName()).toString());
-              print(" -> cl");
-              print(classMapNameToIndex.get(second.getName()).toString());
-              println();
-              printedConnections.add(new Pair(cl, second));
+              printOneWayConnection(printedConnections, cl, second);
             }
           }
         }
@@ -138,19 +126,41 @@ public class DotGenerator {
     }
   }
 
-  private boolean isBidirectionalConnection(Class first, Class second) {
-    Set<Class> firstCollaborators = first.getResponsibilities().stream()
-        .map(r -> r.getCollaborator())
-        .filter(c -> c != null)
-        .map(c -> diagram.getClassByKey(c))
-        .collect(Collectors.toSet());
-    Set<Class> secondCollaborators = second.getResponsibilities().stream()
-        .map(r -> r.getCollaborator())
-        .filter(c -> c != null)
-        .map(c -> diagram.getClassByKey(c))
-        .collect(Collectors.toSet());
+  private void printOneWayConnection(Set<Pair> printedConnections, Class classFrom, Class classTo) throws IOException {
+    printIndent();
+    print("cl");
+    print(classMapNameToIndex.get(classFrom.getName()).toString());
+    print(" -> cl");
+    print(classMapNameToIndex.get(classTo.getName()).toString());
+    println();
+    printedConnections.add(new Pair(classFrom, classTo));
+  }
 
+  private void printBidirectionalConnection(Set<Pair> printedConnections, Class firstClass, Class secondClass)
+      throws IOException {
+    printedConnections.add(new Pair(firstClass, secondClass));
+    printedConnections.add(new Pair(secondClass, firstClass));
+    printIndent();
+    print("cl");
+    print(classMapNameToIndex.get(firstClass.getName()).toString());
+    print(" -> cl");
+    print(classMapNameToIndex.get(secondClass.getName()).toString());
+    print(" [dir=both]");
+    println();
+  }
+
+  private boolean isBidirectionalConnection(Class first, Class second) {
+    Set<Class> firstCollaborators = extractCollaboratorsForClass(first);
+    Set<Class> secondCollaborators = extractCollaboratorsForClass(second);
     return firstCollaborators.contains(second) && secondCollaborators.contains(first);
+  }
+
+  private Set<Class> extractCollaboratorsForClass(Class clazz) {
+    return clazz.getResponsibilities().stream()
+        .map(r -> r.getCollaborator())
+        .filter(c -> c != null)
+        .map(c -> diagram.getClassByKey(c))
+        .collect(Collectors.toSet());
   }
 
   private boolean isPrintedConnection(Set<Pair> printedConnections, Class cl, Class second) {
