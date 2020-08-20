@@ -22,7 +22,6 @@ class ArgumentParsingTest {
   private String dotPath;
   private boolean convertCalled = false;
 
-  private int exitCode = 0;
   private TestExitException exitException;
   private StringWriter writer;
 
@@ -54,7 +53,6 @@ class ArgumentParsingTest {
 
       @Override
       void exitApp(int code) {
-        exitCode = code;
         exitException = new TestExitException(code);
       }
     };
@@ -92,7 +90,7 @@ class ArgumentParsingTest {
     String printedText = writer.toString();
     assertThat(printedText).isEqualTo(
         "Missing argument for option: i\n\n" + getHelpMessage());
-    assertThat(exitCode).isEqualTo(100);
+    assertThat(exitException.exitCode).isEqualTo(100);
   }
 
   @Test
@@ -101,7 +99,7 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(inputFile).isEqualTo("someInputFile.crc");
-    assertThat(exitCode).isNotEqualTo(0);
+    assertThat(exitException.exitCode).isNotEqualTo(0);
   }
 
   @Test
@@ -110,7 +108,7 @@ class ArgumentParsingTest {
 
     String printedText = writer.toString();
     assertThat(printedText).isEqualTo("-o is required option\n\n" + getHelpMessage());
-    assertThat(exitCode).isEqualTo(2);
+    assertThat(exitException.exitCode).isEqualTo(2);
   }
 
   @Test
@@ -121,7 +119,7 @@ class ArgumentParsingTest {
     String printedText = writer.toString();
     assertThat(printedText).isEqualTo(
         "Missing argument for option: o\n\n" + getHelpMessage());
-    assertThat(exitCode).isEqualTo(100);
+    assertThat(exitException.exitCode).isEqualTo(100);
   }
 
   @Test
@@ -130,7 +128,7 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(outputFile).isEqualTo("someOutputFile.png");
-    assertThat(exitCode).isEqualTo(0);
+    assertThat(exitException).isNull();
   }
 
   @Test
@@ -139,7 +137,7 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(format).isEqualTo(FileFormat.PNG);
-    assertThat(exitCode).isEqualTo(0);
+    assertThat(exitException).isNull();
   }
 
   @Test
@@ -150,7 +148,7 @@ class ArgumentParsingTest {
     String printedText = writer.toString();
     assertThat(printedText).isEqualTo(
         "Missing argument for option: f\n\n" + getHelpMessage());
-    assertThat(exitCode).isEqualTo(100);
+    assertThat(exitException.exitCode).isEqualTo(100);
   }
 
   @Test
@@ -162,7 +160,7 @@ class ArgumentParsingTest {
     String printedText = writer.toString();
     assertThat(printedText).isEqualTo(
         "Option -f need to have specific values.\n\n" + getHelpMessage());
-    assertThat(exitCode).isEqualTo(3);
+    assertThat(exitException.exitCode).isEqualTo(3);
   }
 
   @Test
@@ -172,7 +170,7 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(format).isEqualTo(FileFormat.SVG);
-    assertThat(exitCode).isEqualTo(0);
+    assertThat(exitException).isNull();
   }
 
   @Test
@@ -181,7 +179,7 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(dotPath).isNull();
-    assertThat(exitCode).isEqualTo(0);
+    assertThat(exitException).isNull();
   }
 
   @Test
@@ -192,7 +190,7 @@ class ArgumentParsingTest {
     String printedText = writer.toString();
     assertThat(printedText).isEqualTo(
         "Missing argument for option: dotPath\n\n" + getHelpMessage());
-    assertThat(exitCode).isEqualTo(100);
+    assertThat(exitException.exitCode).isEqualTo(100);
   }
 
   @Test
@@ -202,7 +200,7 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(dotPath).isEqualTo("/some/path");
-    assertThat(exitCode).isEqualTo(0);
+    assertThat(exitException).isNull();
   }
 
 }
