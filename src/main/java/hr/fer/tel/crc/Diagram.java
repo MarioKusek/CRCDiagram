@@ -33,9 +33,9 @@ public class Diagram {
         c.getResponsibilities().stream().forEach(r -> {
           String collaborator = r.getCollaborator();
           if(collaborator != null && getClassByKey(collaborator) == null)
-            throw new RuntimeException("Class with name " + c.getName() + " has collaborator " + collaborator + " that can not be found.");
+            throw new CollaboratorNotFoundException(c.getName(), collaborator);
           else if(collaborator != null && getClassByKey(collaborator) == c)
-            throw new RuntimeException("Class with name " + c.getName() + " must not have collaborator that is that class");
+            throw new RuntimeException("Class with name " + c.getName() + " must not have collaborator that is this class");
 
         });
       });
