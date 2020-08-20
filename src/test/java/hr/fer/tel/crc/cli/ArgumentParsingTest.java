@@ -103,6 +103,7 @@ class ArgumentParsingTest {
     assertThat(exitCode).isEqualTo(2);
   }
 
+  @Test
   void outputFileMissing() throws Exception {
     app.parseInput(Arrays.array("-i", "someInput", "-o"));
     app.convert();
