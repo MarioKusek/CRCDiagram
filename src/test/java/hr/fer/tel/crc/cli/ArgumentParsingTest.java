@@ -64,7 +64,6 @@ class ArgumentParsingTest {
     app.parseInput(Arrays.array("-h"));
 
     assertThat(writer.toString()).isEqualTo(getHelpMessage());
-    assertThat(exitException).isNull();
   }
 
   private String getHelpMessage() {
@@ -106,7 +105,6 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(inputFile).isEqualTo("someInputFile.crc");
-    assertThat(exitException).isNotNull();
   }
 
   @Test
@@ -139,7 +137,6 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(outputFile).isEqualTo("someOutputFile.png");
-    assertThat(exitException).isNull();
   }
 
   @Test
@@ -148,7 +145,6 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(format).isEqualTo(FileFormat.PNG);
-    assertThat(exitException).isNull();
   }
 
   @Test
@@ -185,7 +181,6 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(format).isEqualTo(FileFormat.SVG);
-    assertThat(exitException).isNull();
   }
 
   @Test
@@ -194,7 +189,6 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(dotPath).isNull();
-    assertThat(exitException).isNull();
   }
 
   @Test
@@ -217,7 +211,6 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(dotPath).isEqualTo("/some/path");
-    assertThat(exitException).isNull();
   }
 
 }
