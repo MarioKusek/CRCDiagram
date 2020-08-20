@@ -25,7 +25,7 @@ public class DotGenerator {
     this.writer = new IndentWriter(writer);
   }
 
-  public void writeDiagram() throws IOException {
+  public void printDiagram() throws IOException {
     printPrefix();
     printClasses();
     printConnections();
@@ -111,7 +111,7 @@ public class DotGenerator {
         if(collaborator != null) {
           Class second = diagram.getClassByKey(collaborator);
           if(!isPrintedConnection(printedConnections, cl, second)) {
-            if(isBidirectionalConnection(cl, second)) {
+            if(diagram.isBidirectionalConnection(cl, second)) {
               printBidirectionalConnection(printedConnections, cl, second);
             } else {
               printOneWayConnection(printedConnections, cl, second);
@@ -143,12 +143,6 @@ public class DotGenerator {
     writer.print(classMapNameToIndex.get(secondClass.getName()).toString());
     writer.print(" [dir=both]");
     writer.println();
-  }
-
-  private boolean isBidirectionalConnection(Class first, Class second) {
-    Set<Class> firstCollaborators = diagram.getCollaboratorsForClass(first);
-    Set<Class> secondCollaborators = diagram.getCollaboratorsForClass(second);
-    return firstCollaborators.contains(second) && secondCollaborators.contains(first);
   }
 
   private boolean isPrintedConnection(Set<Pair> printedConnections, Class cl, Class second) {

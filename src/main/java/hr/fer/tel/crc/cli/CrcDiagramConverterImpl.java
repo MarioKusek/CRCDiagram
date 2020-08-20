@@ -17,7 +17,7 @@ public class CrcDiagramConverterImpl implements CrcDiagramConverter {
   public void convertToImage(String inputFile, String outputFile, FileFormat format, String dotPath) throws IOException, InterruptedException {
     final StringWriter sw = new StringWriter();
     final Diagram diagram = new DiagramParser(Files.readString(Path.of(inputFile))).parse();
-    new DotGenerator(diagram, sw).writeDiagram();
+    new DotGenerator(diagram, sw).printDiagram();
     DotToImageGenerator.generate(sw.toString(), outputFile, format, dotPath == null ? "/usr/local/bin" : dotPath);
   }
 

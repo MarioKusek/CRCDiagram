@@ -58,4 +58,10 @@ public class Diagram {
         .collect(Collectors.toSet());
   }
 
+  public boolean isBidirectionalConnection(Class first, Class second) {
+    Set<Class> firstCollaborators = getCollaboratorsForClass(first);
+    Set<Class> secondCollaborators = getCollaboratorsForClass(second);
+    return firstCollaborators.contains(second) && secondCollaborators.contains(first);
+  }
+
 }

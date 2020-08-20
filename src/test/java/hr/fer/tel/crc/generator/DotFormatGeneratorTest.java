@@ -21,7 +21,7 @@ class DotFormatGeneratorTest {
     diagram = new Diagram(List.of());
     generator = new DotGenerator(diagram, writer);
 
-    generator.writeDiagram();
+    generator.printDiagram();
 
     Approvals.verify(writer.toString());
   }
@@ -31,7 +31,7 @@ class DotFormatGeneratorTest {
     diagram = new Diagram(List.of(new Class("className1")));
     generator = new DotGenerator(diagram, writer);
 
-    generator.writeDiagram();
+    generator.printDiagram();
 
     Approvals.verify(writer.toString());
   }
@@ -41,7 +41,7 @@ class DotFormatGeneratorTest {
     diagram = new Diagram(List.of(new Class("className1"), new Class("secondClassName")));
     generator = new DotGenerator(diagram, writer);
 
-    generator.writeDiagram();
+    generator.printDiagram();
 
     Approvals.verify(writer.toString());
   }
@@ -55,7 +55,7 @@ class DotFormatGeneratorTest {
           .build()));
     generator = new DotGenerator(diagram, writer);
 
-    generator.writeDiagram();
+    generator.printDiagram();
 
     Approvals.verify(writer.toString());
   }
@@ -74,7 +74,7 @@ class DotFormatGeneratorTest {
     ));
     generator = new DotGenerator(diagram, writer);
 
-    generator.writeDiagram();
+    generator.printDiagram();
 
     Approvals.verify(writer.toString());
   }
@@ -90,7 +90,7 @@ class DotFormatGeneratorTest {
     ));
     generator = new DotGenerator(diagram, writer);
 
-    generator.writeDiagram();
+    generator.printDiagram();
 
     Approvals.verify(writer.toString());
   }
@@ -111,7 +111,7 @@ class DotFormatGeneratorTest {
     ));
     generator = new DotGenerator(diagram, writer);
 
-    generator.writeDiagram();
+    generator.printDiagram();
 
     Approvals.verify(writer.toString());
   }
@@ -137,7 +137,7 @@ class DotFormatGeneratorTest {
         ));
     generator = new DotGenerator(diagram, writer);
 
-    generator.writeDiagram();
+    generator.printDiagram();
 
     Approvals.verify(writer.toString());
   }
@@ -159,7 +159,7 @@ class DotFormatGeneratorTest {
         ));
     generator = new DotGenerator(diagram, writer);
 
-    generator.writeDiagram();
+    generator.printDiagram();
 
     Approvals.verify(writer.toString());
   }
@@ -181,7 +181,7 @@ class DotFormatGeneratorTest {
         ));
     generator = new DotGenerator(diagram, writer);
 
-    generator.writeDiagram();
+    generator.printDiagram();
 
     Approvals.verify(writer.toString());
   }
