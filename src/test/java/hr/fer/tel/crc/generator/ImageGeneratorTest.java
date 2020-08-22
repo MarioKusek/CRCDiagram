@@ -36,6 +36,8 @@ class ImageGeneratorTest {
     Approvals.verify(outputFile.toFile());
   }
 
+  // TODO add test with debug writer
+
   public static void main(String[] args) throws IOException, InterruptedException {
     String inputFile = "test.dot";
     String graph = Files.readString(Path.of(inputFile), StandardCharsets.UTF_8);

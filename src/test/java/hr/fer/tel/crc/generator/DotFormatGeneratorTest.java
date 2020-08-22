@@ -186,7 +186,7 @@ class DotFormatGeneratorTest {
     Approvals.verify(writer.toString());
   }
 
-  // TODO escaping text in class name, responsibility and collaborators
+  // escaping text in class name, responsibility and collaborators
   /*
    * \ --> \\ - generating
    * \n --> \l - parsing, generating and counting
