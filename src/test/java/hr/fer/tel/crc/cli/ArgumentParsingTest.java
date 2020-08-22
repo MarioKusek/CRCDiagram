@@ -22,6 +22,7 @@ class ArgumentParsingTest {
   private String outputFile;
   private FileFormat format;
   private String dotPath;
+  private IndentWriter debugLogger;
 
   private TestExitException exitException;
   private StringWriter writer;
@@ -39,6 +40,7 @@ class ArgumentParsingTest {
 
     @Override
     public void setDebugLogger(IndentWriter debugLogger) {
+      ArgumentParsingTest.this.debugLogger = debugLogger;
     }
   }
 
@@ -213,6 +215,16 @@ class ArgumentParsingTest {
     app.convert();
 
     assertThat(dotPath).isEqualTo("/some/path");
+  }
+
+  @Test
+  void debugOptionIsUsed() throws Exception {
+    parameters = Arrays.array("-d" , "-i", "someInputFile.crc", "-o", "someOutputFile.png");
+
+    app.parseInput(parameters);
+    app.convert();
+
+    assertThat(debugLogger).isNotNull();
   }
 
 }

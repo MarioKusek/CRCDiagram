@@ -51,7 +51,6 @@ class ImageGeneratorTest {
     Approvals.verify(outputFile.toFile());
   }
 
-  // TODO add test with debug writer
   @Test
   void debugLoggingCommand() throws Exception {
     StringWriter sw = new StringWriter();

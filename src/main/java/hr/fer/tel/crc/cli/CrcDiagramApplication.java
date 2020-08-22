@@ -13,6 +13,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
 import hr.fer.tel.crc.generator.FileFormat;
+import hr.fer.tel.crc.generator.IndentWriter;
 
 public class CrcDiagramApplication {
 
@@ -25,6 +26,7 @@ public class CrcDiagramApplication {
   private String outputFile;
   private FileFormat format;
   private String dotPath;
+  private IndentWriter debugLogger;
 
   public CrcDiagramApplication(PrintWriter writer, CrcDiagramConverter converter) {
     this.writer = writer;
@@ -61,6 +63,10 @@ public class CrcDiagramApplication {
         .desc("path to dot command")
         .hasArg()
         .argName("path")
+        .build());
+
+    options.addOption(Option.builder("d")
+        .desc("debug")
         .build());
 
   }
@@ -116,6 +122,10 @@ public class CrcDiagramApplication {
     if (line.hasOption("dotPath")) {
       dotPath = line.getOptionValue("dotPath");
     }
+
+    if (line.hasOption("d")) {
+      debugLogger = new IndentWriter(writer);
+    }
   }
 
   void exitApp(int exitCode) {
@@ -123,6 +133,7 @@ public class CrcDiagramApplication {
   }
 
   public void convert() throws IOException, InterruptedException {
+    converter.setDebugLogger(debugLogger);
     converter.convertToImage(inputFile, outputFile, format, dotPath);
   }
 
