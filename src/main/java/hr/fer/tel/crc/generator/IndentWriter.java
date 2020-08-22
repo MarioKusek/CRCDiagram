@@ -13,13 +13,13 @@ public class IndentWriter {
   }
 
   public void println() throws IOException {
-    writer.append("\n");
+    print("\n");
   }
 
   public void println(String string) throws IOException {
     printIndent();
     print(string);
-    writer.append("\n");
+    println();
   }
 
   public void print(String string) throws IOException {
@@ -28,7 +28,7 @@ public class IndentWriter {
 
   public void printIndent() throws IOException {
     for(int i=0; i < indent * 2; i++)
-      writer.append(" ");
+      print(" ");
   }
 
   public void decreseIndent() {
