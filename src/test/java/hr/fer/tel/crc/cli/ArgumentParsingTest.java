@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import hr.fer.tel.crc.generator.FileFormat;
+import hr.fer.tel.crc.generator.IndentWriter;
 
 class ArgumentParsingTest {
   private CrcDiagramApplication app;
@@ -34,6 +35,10 @@ class ArgumentParsingTest {
           ArgumentParsingTest.this.outputFile = outputFile;
           ArgumentParsingTest.this.format = format;
           ArgumentParsingTest.this.dotPath = dotPath;
+    }
+
+    @Override
+    public void setDebugLogger(IndentWriter debugLogger) {
     }
   }
 

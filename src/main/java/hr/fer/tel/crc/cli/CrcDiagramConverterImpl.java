@@ -9,9 +9,11 @@ import hr.fer.tel.crc.Diagram;
 import hr.fer.tel.crc.generator.DotGenerator;
 import hr.fer.tel.crc.generator.DotToImageGenerator;
 import hr.fer.tel.crc.generator.FileFormat;
+import hr.fer.tel.crc.generator.IndentWriter;
 import hr.fer.tel.crc.parser.DiagramParser;
 
 public class CrcDiagramConverterImpl implements CrcDiagramConverter {
+  private IndentWriter debugLogger;
 
   @Override
   public void setDebugLogger(IndentWriter debugLogger) {
