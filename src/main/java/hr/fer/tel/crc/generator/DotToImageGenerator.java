@@ -6,11 +6,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class DotToImageGenerator {
 
+  private IndentWriter debugLogger;
+
   public DotToImageGenerator() {
+  }
+
+  public DotToImageGenerator(IndentWriter debugLogger) {
+    this.debugLogger = debugLogger;
   }
 
   public void generate(String graph, String outputFile, FileFormat fileFormat, String pathToDot)
@@ -51,10 +59,17 @@ public class DotToImageGenerator {
       System.exit(dotProcess.exitValue());
   }
 
-  private String[] generateShellCommand(String outputFile, FileFormat fileFormat) {
+  private String[] generateShellCommand(String outputFile, FileFormat fileFormat) throws IOException {
     final String shell = System.getenv("SHELL");
-    String graphvizArguments[] = new String[] {shell, "-c", "dot -o" + outputFile + " -T " + fileFormat.getFormatText()};
-    // TODO this arguments should be in debug logger
+    String graphvizArguments[] = new String[] {shell, "-c", "dot -o " + outputFile + " -T " + fileFormat.getFormatText()};
+
+    if(debugLogger != null) {
+      debugLogger.println("DEBUG: Running following commandline:");
+      debugLogger.increseIndent();
+      debugLogger.println(Arrays.asList(graphvizArguments).stream().collect(Collectors.joining(" ")));
+      debugLogger.decreseIndent();
+    }
+
     return graphvizArguments;
   }
 

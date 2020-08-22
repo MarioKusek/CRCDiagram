@@ -1,9 +1,14 @@
 package hr.fer.tel.crc.generator;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.approvaltests.Approvals;
 import org.approvaltests.reporters.UseReporter;
@@ -47,6 +52,24 @@ class ImageGeneratorTest {
   }
 
   // TODO add test with debug writer
+  @Test
+  void debugLoggingCommand() throws Exception {
+    StringWriter sw = new StringWriter();
+    IndentWriter iw = new IndentWriter(sw);
+
+    new DotToImageGenerator(iw).generate(
+        exampleOfDotFormat,
+        outputFile.toString(),
+        FileFormat.PNG,
+        "/usr/local/bin");
+
+    List<String> debugOutput = sw.toString().lines().collect(Collectors.toList());
+
+    assertThat(debugOutput).hasSize(2);
+    assertThat(debugOutput.get(0)).isEqualTo("DEBUG: Running following commandline:");
+    assertThat(debugOutput.get(1)).startsWith("  /bin/zsh -c dot -o ");
+    assertThat(debugOutput.get(1)).endsWith("test.png -T png");
+  }
 
 
   public static void main(String[] args) throws IOException, InterruptedException {
