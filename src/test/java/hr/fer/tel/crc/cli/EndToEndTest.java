@@ -14,7 +14,7 @@ import hr.fer.tel.approval.ImageDiffWebReporter;
 class EndToEndTest {
 
   @Test
-  void example() throws Exception {
+  void exampleOutputFile() throws Exception {
     Path inputFile = Path.of("src", "test", "resources", "test.crc");
     Path destDir = Path.of("build", "endToEnd");
     Files.createDirectories(destDir);
