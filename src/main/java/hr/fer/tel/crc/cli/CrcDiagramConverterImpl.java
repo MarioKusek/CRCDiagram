@@ -14,11 +14,28 @@ import hr.fer.tel.crc.parser.DiagramParser;
 public class CrcDiagramConverterImpl implements CrcDiagramConverter {
 
   @Override
-  public void convertToImage(String inputFile, String outputFile, FileFormat format, String dotPath) throws IOException, InterruptedException {
-    final StringWriter sw = new StringWriter();
-    final Diagram diagram = new DiagramParser(Files.readString(Path.of(inputFile))).parse();
+  public void setDebugLogger(IndentWriter debugLogger) {
+    this.debugLogger = debugLogger;
+  }
+
+  @Override
+  public void convertToImage(String inputFile, String outputFile, FileFormat imageFormat, String dotPath) throws IOException, InterruptedException {
+    final Diagram diagram = parseDiagramFromFile(inputFile);
+
+    final StringWriter dotFormatWriter = new StringWriter();
+    convertDiagramToGraphvizFormat(dotFormatWriter, diagram);
+
+    final String diagramInDotFormat = dotFormatWriter.toString();
+    DotToImageGenerator.generate(diagramInDotFormat, outputFile, imageFormat, dotPath == null ? "/usr/local/bin" : dotPath);
+  }
+
+  private void convertDiagramToGraphvizFormat(final StringWriter sw, final Diagram diagram) throws IOException {
     new DotGenerator(diagram, sw).printDiagram();
-    DotToImageGenerator.generate(sw.toString(), outputFile, format, dotPath == null ? "/usr/local/bin" : dotPath);
+  }
+
+  private Diagram parseDiagramFromFile(String inputFile) throws IOException {
+    final Diagram diagram = new DiagramParser(Files.readString(Path.of(inputFile))).parse();
+    return diagram;
   }
 
 }
