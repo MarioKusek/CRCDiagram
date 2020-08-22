@@ -1,0 +1,5 @@
+DEBUG: generated dot diagram
+digraph structs {
+  node [shape=record];
+
+}

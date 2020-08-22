@@ -27,6 +27,18 @@ class DotFormatGeneratorTest {
   }
 
   @Test
+  void emptyDiagramWitDebugLogger() throws Exception {
+    diagram = new Diagram(List.of());
+    StringWriter debugStringWriter = new StringWriter();
+    IndentWriter debugLogger = new IndentWriter(debugStringWriter);
+    generator = new DotGenerator(diagram, writer, debugLogger);
+
+    generator.printDiagram();
+
+    Approvals.verify(debugStringWriter.toString());
+  }
+
+  @Test
   void oneClassWithoutResponsibilities() throws Exception {
     diagram = new Diagram(List.of(new Class("className1")));
     generator = new DotGenerator(diagram, writer);

@@ -28,16 +28,11 @@ public class CrcDiagramConverterImpl implements CrcDiagramConverter {
     convertDiagramToGraphvizFormat(dotFormatWriter, diagram);
 
     final String diagramInDotFormat = dotFormatWriter.toString();
-    if(debugLogger != null) {
-      // TODO
-//      debugLogger.println("DEBUG: generated dot diagram");
-//      debugLogger.println(diagramInDotFormat);
-    }
     new DotToImageGenerator().generate(diagramInDotFormat, outputFile, imageFormat, dotPath == null ? "/usr/local/bin" : dotPath);
   }
 
   private void convertDiagramToGraphvizFormat(final StringWriter sw, final Diagram diagram) throws IOException {
-    new DotGenerator(diagram, sw).printDiagram();
+    new DotGenerator(diagram, sw, debugLogger).printDiagram();
   }
 
   private Diagram parseDiagramFromFile(String inputFile) throws IOException {

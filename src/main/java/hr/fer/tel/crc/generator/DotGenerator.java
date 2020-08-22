@@ -24,9 +24,32 @@ public class DotGenerator {
   private Set<ClassConnection> printedConnections;
 
   public DotGenerator(Diagram diagram, Writer writer) {
+    this(diagram, writer, null);
+  }
+
+  public DotGenerator(Diagram diagram, Writer writer, IndentWriter debugLogger) {
     this.diagram = diagram;
-    this.writer = new IndentWriter(writer);
     this.printedConnections = new HashSet<>();
+
+    if(debugLogger != null) {
+      try {
+        debugLogger.println("DEBUG: generated dot diagram");
+      } catch (IOException e) {
+        // This should never happened.
+        e.printStackTrace();
+      }
+
+      this.writer = new IndentWriter(writer) {
+        @Override
+        public void print(String string) throws IOException {
+          super.print(string);
+          debugLogger.print(string);
+        }
+      };
+
+    } else {
+      this.writer = new IndentWriter(writer);
+    }
   }
 
   public void printDiagram() throws IOException {
