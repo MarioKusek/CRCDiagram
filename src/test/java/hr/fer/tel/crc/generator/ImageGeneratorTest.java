@@ -7,6 +7,7 @@ import java.nio.file.Path;
 
 import org.approvaltests.Approvals;
 import org.approvaltests.reporters.UseReporter;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import hr.fer.tel.approval.ImageDiffWebReporter;
@@ -14,12 +15,15 @@ import hr.fer.tel.approval.ImageDiffWebReporter;
 @UseReporter({ImageDiffWebReporter.class})
 class ImageGeneratorTest {
 
-  @Test
-  void imageGeneration() throws Exception {
-    Path tempDir = Files.createTempDirectory("dotDir");
-    Path outputFile = Path.of(tempDir.toAbsolutePath().toString(), "test.png");
-    new DotToImageGenerator().generate(
-        "digraph structs {\n" +
+  private Path tempDir;
+  private Path outputFile;
+  private String exampleOfDotFormat;
+
+  @BeforeEach
+  void setup() throws Exception {
+    tempDir = Files.createTempDirectory("dotDir");
+    outputFile = Path.of(tempDir.toAbsolutePath().toString(), "test.png");
+    exampleOfDotFormat = "digraph structs {\n" +
         "  node [shape=record];\n" +
         "  cl0 [label=\"{className1 | {- c1 resp1\\l- c1 resp2 | className2\\lclassName2}}\"];\n" +
         "  cl1 [label=\"{className2 | {- c2 resp1\\l- c2 resp2 | \\lclassName3}}\"];\n" +
@@ -28,7 +32,13 @@ class ImageGeneratorTest {
         "  cl0 -> cl1\n" +
         "  cl1 -> cl2\n" +
         "  cl2 -> cl0\n" +
-        "}\n",
+        "}\n";
+  }
+
+  @Test
+  void imageGeneration() throws Exception {
+    new DotToImageGenerator().generate(
+        exampleOfDotFormat,
         outputFile.toString(),
         FileFormat.PNG,
         "/usr/local/bin");
@@ -37,6 +47,7 @@ class ImageGeneratorTest {
   }
 
   // TODO add test with debug writer
+
 
   public static void main(String[] args) throws IOException, InterruptedException {
     String inputFile = "test.dot";
