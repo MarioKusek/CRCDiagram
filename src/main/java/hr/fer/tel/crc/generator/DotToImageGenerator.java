@@ -18,7 +18,8 @@ public class DotToImageGenerator {
     ProcessBuilder builder;
 
     final String shell = System.getenv("SHELL");
-    builder = new ProcessBuilder(shell, "-c", "dot -o" + outputFile + " -T " + fileFormat.getFormatText());
+    String graphvizArguments[] = new String[] {shell, "-c", "dot -o" + outputFile + " -T " + fileFormat.getFormatText()};
+    builder = new ProcessBuilder(graphvizArguments);
 
     if(pathToDot != null) {
       final Map<String, String> env = builder.environment();
