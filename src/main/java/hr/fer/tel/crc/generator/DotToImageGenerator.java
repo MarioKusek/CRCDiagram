@@ -17,8 +17,13 @@ public class DotToImageGenerator {
       throws IOException, InterruptedException {
     ProcessBuilder builder;
 
-    final String shell = System.getenv("SHELL");
-    String graphvizArguments[] = new String[] {shell, "-c", "dot -o" + outputFile + " -T " + fileFormat.getFormatText()};
+    String[] graphvizArguments = generateShellCommand(outputFile, fileFormat);
+    runGraphviz(graph, pathToDot, graphvizArguments);
+  }
+
+  private static void runGraphviz(String graph, String pathToDot, String[] graphvizArguments)
+      throws IOException, InterruptedException {
+    ProcessBuilder builder;
     builder = new ProcessBuilder(graphvizArguments);
 
     if(pathToDot != null) {
@@ -38,7 +43,7 @@ public class DotToImageGenerator {
     final BufferedReader reader = new BufferedReader(new InputStreamReader(dotProcess.getInputStream()));
     String line = reader.readLine();
     while (line != null) {
-      System.out.println("Running Graphviz dot command: " + line);
+      System.out.println("Graphviz dot command output: " + line);
       line = reader.readLine();
     }
 
@@ -46,6 +51,13 @@ public class DotToImageGenerator {
 
     if(dotProcess.exitValue() != 0)
       System.exit(dotProcess.exitValue());
+  }
+
+  private static String[] generateShellCommand(String outputFile, FileFormat fileFormat) {
+    final String shell = System.getenv("SHELL");
+    String graphvizArguments[] = new String[] {shell, "-c", "dot -o" + outputFile + " -T " + fileFormat.getFormatText()};
+    // TODO this arguments should be in debug logger
+    return graphvizArguments;
   }
 
 }
