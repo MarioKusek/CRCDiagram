@@ -18,7 +18,7 @@ class ImageGeneratorTest {
   void imageGeneration() throws Exception {
     Path tempDir = Files.createTempDirectory("dotDir");
     Path outputFile = Path.of(tempDir.toAbsolutePath().toString(), "test.png");
-    DotToImageGenerator.generate(
+    new DotToImageGenerator().generate(
         "digraph structs {\n" +
         "  node [shape=record];\n" +
         "  cl0 [label=\"{className1 | {- c1 resp1\\l- c1 resp2 | className2\\lclassName2}}\"];\n" +
@@ -43,7 +43,7 @@ class ImageGeneratorTest {
     FileFormat fileFormat = FileFormat.PNG;
     String pathToDot = "/usr/local/bin";
 
-    DotToImageGenerator.generate(graph, outputFile, fileFormat, pathToDot);
+    new DotToImageGenerator().generate(graph, outputFile, fileFormat, pathToDot);
   }
 }
 

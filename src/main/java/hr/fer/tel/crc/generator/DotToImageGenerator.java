@@ -10,18 +10,16 @@ import java.util.Map;
 
 public class DotToImageGenerator {
 
-  private DotToImageGenerator() {
+  public DotToImageGenerator() {
   }
 
-  public static void generate(String graph, String outputFile, FileFormat fileFormat, String pathToDot)
+  public void generate(String graph, String outputFile, FileFormat fileFormat, String pathToDot)
       throws IOException, InterruptedException {
-    ProcessBuilder builder;
-
     String[] graphvizArguments = generateShellCommand(outputFile, fileFormat);
     runGraphviz(graph, pathToDot, graphvizArguments);
   }
 
-  private static void runGraphviz(String graph, String pathToDot, String[] graphvizArguments)
+  private void runGraphviz(String graph, String pathToDot, String[] graphvizArguments)
       throws IOException, InterruptedException {
     ProcessBuilder builder;
     builder = new ProcessBuilder(graphvizArguments);
@@ -53,7 +51,7 @@ public class DotToImageGenerator {
       System.exit(dotProcess.exitValue());
   }
 
-  private static String[] generateShellCommand(String outputFile, FileFormat fileFormat) {
+  private String[] generateShellCommand(String outputFile, FileFormat fileFormat) {
     final String shell = System.getenv("SHELL");
     String graphvizArguments[] = new String[] {shell, "-c", "dot -o" + outputFile + " -T " + fileFormat.getFormatText()};
     // TODO this arguments should be in debug logger
