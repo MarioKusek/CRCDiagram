@@ -24,6 +24,7 @@ public class IndentWriter {
 
   public void print(String string) throws IOException {
     writer.append(string);
+    writer.flush();
   }
 
   public void printIndent() throws IOException {
