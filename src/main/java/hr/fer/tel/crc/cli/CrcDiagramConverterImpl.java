@@ -28,7 +28,7 @@ public class CrcDiagramConverterImpl implements CrcDiagramConverter {
     convertDiagramToGraphvizFormat(dotFormatWriter, diagram);
 
     final String diagramInDotFormat = dotFormatWriter.toString();
-    new DotToImageGenerator().generate(diagramInDotFormat, outputFile, imageFormat, dotPath == null ? "/usr/local/bin" : dotPath);
+    new DotToImageGenerator(debugLogger).generate(diagramInDotFormat, outputFile, imageFormat, dotPath == null ? "/usr/local/bin" : dotPath);
   }
 
   private void convertDiagramToGraphvizFormat(final StringWriter sw, final Diagram diagram) throws IOException {
