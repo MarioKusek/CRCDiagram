@@ -24,4 +24,13 @@ class EndToEndTest {
 
     Approvals.verify(outputFile.toFile());
   }
+
+  public static void main(String[] args) throws Exception {
+    Path inputFile = Path.of("src", "test", "resources", "test.crc");
+    Path destDir = Path.of("build");
+    Files.createDirectories(destDir);
+    Path outputFile = destDir.resolve("manualTest.png");
+
+    CrcDiagramApplication.main(Arrays.array("-d", "-i", inputFile.toString(), "-o", outputFile.toString()));
+  }
 }
