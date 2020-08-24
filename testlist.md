@@ -5,6 +5,3 @@
   * or change alias for class name
 * BUG last responsibility and collaborator are not left justified
 * BUG last collaborator is not at the bottom
-* FEATURE option "-d" for debug
-  * prints generated dot file in output
-  * prints graphviz command
