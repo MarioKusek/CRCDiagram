@@ -81,6 +81,11 @@ public class DotGenerator {
     writer.print(index.toString());
     writer.print(" [label=\"{");
     writer.print(escapingString(cl.getName()));
+    if(cl.getAlias() != null) {
+      writer.print(" [");
+      writer.print(cl.getAlias());
+      writer.print("]");
+    }
     writer.print(" | {");
     printResponsibilities(cl);
     writer.print(" | ");

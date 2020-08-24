@@ -49,6 +49,19 @@ class DotFormatGeneratorTest {
   }
 
   @Test
+  void oneClassWithAlias() throws Exception {
+    diagram = new Diagram(List.of(Class.builder()
+        .name("className1")
+        .alias("classAlias1")
+        .build()));
+    generator = new DotGenerator(diagram, writer);
+
+    generator.printDiagram();
+
+    Approvals.verify(writer.toString());
+  }
+
+  @Test
   void twoClassesWithoutResponsibilities() throws Exception {
     diagram = new Diagram(List.of(new Class("className1"), new Class("secondClassName")));
     generator = new DotGenerator(diagram, writer);
