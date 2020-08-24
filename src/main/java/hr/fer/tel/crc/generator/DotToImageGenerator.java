@@ -23,7 +23,7 @@ public class DotToImageGenerator {
 
   public void generate(String graph, String outputFile, FileFormat fileFormat, String pathToDot)
       throws IOException, InterruptedException {
-    String[] graphvizArguments = generateShellCommand(outputFile, fileFormat);
+    final String[] graphvizArguments = generateShellCommand(outputFile, fileFormat);
     runGraphviz(graph, pathToDot, graphvizArguments);
   }
 
@@ -61,7 +61,7 @@ public class DotToImageGenerator {
 
   private String[] generateShellCommand(String outputFile, FileFormat fileFormat) throws IOException {
     final String shell = System.getenv("SHELL");
-    String graphvizArguments[] = new String[] {shell, "-c", "dot -o " + outputFile + " -T " + fileFormat.getFormatText()};
+    final String[] graphvizArguments = new String[] {shell, "-c", "dot -o " + outputFile + " -T " + fileFormat.getFormatText()};
 
     if(debugLogger != null) {
       debugLogger.println("DEBUG: Running following commandline:");

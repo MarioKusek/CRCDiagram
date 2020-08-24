@@ -36,8 +36,7 @@ public class CrcDiagramConverterImpl implements CrcDiagramConverter {
   }
 
   private Diagram parseDiagramFromFile(String inputFile) throws IOException {
-    final Diagram diagram = new DiagramParser(Files.readString(Path.of(inputFile))).parse();
-    return diagram;
+    return new DiagramParser(Files.readString(Path.of(inputFile))).parse();
   }
 
 }

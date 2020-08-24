@@ -31,7 +31,9 @@ public class DotGenerator {
     this.diagram = diagram;
     this.printedConnections = new HashSet<>();
 
-    if(debugLogger != null) {
+    if(debugLogger == null) {
+      this.writer = new IndentWriter(writer);
+    } else {
       try {
         debugLogger.println("DEBUG: generated dot diagram");
       } catch (IOException e) {
@@ -46,9 +48,6 @@ public class DotGenerator {
           debugLogger.print(string);
         }
       };
-
-    } else {
-      this.writer = new IndentWriter(writer);
     }
   }
 
