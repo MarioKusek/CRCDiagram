@@ -1,5 +1,5 @@
 digraph structs {
   node [shape=record];
-  cl0 [label="{className1 | {- c1 resp1\l- c1 resp2 | \l}}"];
+  cl0 [label="{className1 | {- c1 resp1\l- c1 resp2\l | \l\l}}"];
 
 }

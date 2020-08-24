@@ -1,6 +1,6 @@
 digraph structs {
   node [shape=record];
-  cl0 [label="{className1 | { | }}"];
-  cl1 [label="{secondClassName | { | }}"];
+  cl0 [label="{className1 | {\l | \l}}"];
+  cl1 [label="{secondClassName | {\l | \l}}"];
 
 }

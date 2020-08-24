@@ -104,13 +104,13 @@ public class DotGenerator {
   private void printResponsibilities(Class cl) throws IOException {
     writer.print(cl.getResponsibilities().stream()
     .map(r -> "- " + escapingString(r.getText()))
-    .collect(Collectors.joining("\\l")));
+    .collect(Collectors.joining("\\l", "", "\\l")));
   }
 
   private void printCollaborators(Class cl) throws IOException {
     writer.print(cl.getResponsibilities().stream()
     .map(this::createCollaboratorString)
-    .collect(Collectors.joining("\\l")));
+    .collect(Collectors.joining("\\l", "", "\\l")));
   }
 
   private String createCollaboratorString(Responsibility r) {
