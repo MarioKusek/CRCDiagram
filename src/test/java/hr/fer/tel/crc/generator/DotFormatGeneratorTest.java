@@ -27,7 +27,7 @@ class DotFormatGeneratorTest {
   }
 
   @Test
-  void emptyDiagramWitDebugLogger() throws Exception {
+  void emptyDiagramWithDebugLogger() throws Exception {
     diagram = new Diagram(List.of());
     StringWriter debugStringWriter = new StringWriter();
     IndentWriter debugLogger = new IndentWriter(debugStringWriter);
