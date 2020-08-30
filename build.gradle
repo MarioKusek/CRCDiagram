@@ -30,7 +30,7 @@ repositories {
 
 group = 'hr.fer.tel.crc'
 archivesBaseName = 'CrcDiagram'
-version = '0.1.0'
+version = '0.2.0'
 
 sourceCompatibility = JavaVersion.VERSION_11
 targetCompatibility = JavaVersion.VERSION_11

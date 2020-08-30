@@ -20,7 +20,7 @@ CRC (Class Responsibility Collaboration) Card is a brainstorming tool used in th
 
 Diagrams in this tool are extended with aliases for each class name and with arrows that represents collaborators.
 
-Current version is `0.1.0`.
+Current version is `0.2.0`.
 
 ## CRC Diagram File Format
 
@@ -107,11 +107,11 @@ usage: crcDiagram [OPTIONS]
  -h                help
  -i <file>         input file in CRC format
  -o <file>         output file - generated image
+ -v                version
 
 Typical usage: crcDiagram -i input_file -f png -o output_file
 If dot can not be found add parameter with path to it
-e.g. "-dotPath /usr/local/bin"
-```
+e.g. "-dotPath /usr/local/bin"```
 
 Running with jar file:
 
