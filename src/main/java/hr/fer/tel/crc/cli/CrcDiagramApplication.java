@@ -12,6 +12,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 
+import hr.fer.tel.crc.ToolVersion;
 import hr.fer.tel.crc.generator.FileFormat;
 import hr.fer.tel.crc.generator.IndentWriter;
 
@@ -40,6 +41,10 @@ public class CrcDiagramApplication {
     options.addOption(Option.builder("h")
       .desc("help")
       .build());
+
+    options.addOption(Option.builder("v")
+        .desc("version")
+        .build());
 
     options.addOption(Option.builder("i")
       .desc("input file in CRC format")
@@ -79,6 +84,10 @@ public class CrcDiagramApplication {
 
       if (line.hasOption("h")) {
         printHelp();
+        exitApp(0);
+      } else if(line.hasOption("v")) {
+        printVersion();
+        exitApp(0);
       } else {
         fillInArguments(line);
       }
@@ -143,6 +152,17 @@ public class CrcDiagramApplication {
         formatter.getLeftPadding(), formatter.getDescPadding(),
         "\nTypical usage: crcDiagram -i input_file -f png -o output_file\n"
             + "If dot can not be found add parameter with path to it \ne.g. \"-dotPath /usr/local/bin\"");
+  }
+
+  private void printVersion() {
+    writer.print("Version: ");
+    writer.println(ToolVersion.VERSION);
+    writer.print("Build time: ");
+    writer.println(ToolVersion.BUILD_DATE);
+    writer.print("Git commit: ");
+    writer.println(ToolVersion.GIT_SHA);
+    writer.print("Git commit time: ");
+    writer.println(ToolVersion.GIT_DATE);
   }
 
   public static void main(String[] args) throws Exception {

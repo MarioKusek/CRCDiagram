@@ -67,14 +67,29 @@ class ArgumentParsingTest {
 
   @Test
   void help() throws Exception {
-    app.parseInput(Arrays.array("-h"));
+    exitException = assertThrows(TestExitException.class, () -> app.parseInput("-h"));
 
     assertThat(writer).hasToString(getHelpMessage());
+    assertThat(exitException.exitCode).isEqualTo(0);
+  }
+
+  @Test
+  void version() throws Exception {
+    exitException = assertThrows(TestExitException.class, () -> app.parseInput("-v"));
+
+    assertThat(writer.toString()).contains(
+        "Version: ",
+        "Build time: ",
+        "Git commit: ",
+        "Git commit time: ");
+    assertThat(exitException.exitCode).isEqualTo(0);
   }
 
   private String getHelpMessage() {
     StringWriter sw = new StringWriter();
-    CrcDiagramApplication a = new CrcDiagramApplication(new PrintWriter(sw, true), null);
+    CrcDiagramApplication a = new CrcDiagramApplication(new PrintWriter(sw, true), null) {
+
+    };
     a.printHelp();
     return sw.toString();
   }
