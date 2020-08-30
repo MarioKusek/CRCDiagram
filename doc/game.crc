@@ -1,0 +1,13 @@
+class "Player (browser)" as p {
+  enter name : pc
+}
+
+class "Player Controller" as pc {
+  accepts entering player name and remembers it
+  gets list of games : gr
+  shows list of games
+}
+
+class "Game Repository" as gr {
+  knows list of games
+}
