@@ -111,7 +111,8 @@ usage: crcDiagram [OPTIONS]
 
 Typical usage: crcDiagram -i input_file -f png -o output_file
 If dot can not be found add parameter with path to it
-e.g. "-dotPath /usr/local/bin"```
+e.g. "-dotPath /usr/local/bin"
+```
 
 Running with jar file:
 
