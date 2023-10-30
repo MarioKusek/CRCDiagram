@@ -7,18 +7,23 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import org.approvaltests.core.ApprovalFailureReporter;
 import org.approvaltests.reporters.ClipboardReporter;
-import org.approvaltests.reporters.EnvironmentAwareReporter;
 import org.approvaltests.reporters.GenericDiffReporter;
 
 import com.spun.util.tests.TestUtils;
 
-public class ImageDiffWebReporter implements EnvironmentAwareReporter
+public class ImageDiffWebReporter implements ApprovalFailureReporter
 {
   public static final ImageDiffWebReporter INSTANCE = new ImageDiffWebReporter();
   @Override
-  public void report(String received, String approved)
+  public boolean report(String received, String approved)
   {
+    if (!isWorkingInThisEnvironment(received))
+    {
+      return false;
+    }
+
     String text = "<html>\n" +
         "\n" +
         "<body>\n" +
@@ -78,6 +83,8 @@ public class ImageDiffWebReporter implements EnvironmentAwareReporter
 
     text = String.format(text, approved, received, differenceFile.getAbsolutePath(), received, moveText);
     TestUtils.displayHtml(text);
+
+    return true;
   }
 
   private void createDifferenceImage(String received, String approved, File differenceFile) throws IOException {
@@ -146,7 +153,6 @@ public class ImageDiffWebReporter implements EnvironmentAwareReporter
   /**
    * We assume any environment that is not headless will have a web browser to display the image in a web page.
    */
-  @Override
   public boolean isWorkingInThisEnvironment(String forFile)
   {
     return !GraphicsEnvironment.isHeadless()
