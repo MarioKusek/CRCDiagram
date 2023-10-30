@@ -20,7 +20,7 @@ CRC (Class Responsibility Collaboration) Card is a brainstorming tool used in th
 
 Diagrams in this tool are extended with aliases for each class name and with arrows that represents collaborators.
 
-Current version is `0.2.0`.
+Current version is `0.2.1`.
 
 ## CRC Diagram File Format
 
@@ -81,7 +81,7 @@ Compiling:
 ./gradlew fatJar
 ```
 
-It generates `build/libs/CrcDiagram-all-0.1.0.jar`.
+It generates `build/libs/CrcDiagram-all-0.2.1.jar`.
 
 ### Native executable
 
@@ -91,7 +91,7 @@ Compiling:
 ./gradlew nativeImage
 ```
 
-It generates `build/graal/crcDiagram`. You can put crcDiagram in path.
+It generates `build/native/nativeCompile/crcDiagram`. You can put crcDiagram in path.
 
 ## Converting diagram to picture
 
